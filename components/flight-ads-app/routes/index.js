@@ -26,7 +26,7 @@ const routesIndex = async (server, { hdbCore, logger }) => {
     method: "GET",
     handler: async (request, reply) => {
       const mainResults = await main(reply);
-      reply.send(mainResults);
+      return reply.send(mainResults);
     },
   });
 };
