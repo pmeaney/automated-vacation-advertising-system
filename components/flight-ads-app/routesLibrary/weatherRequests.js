@@ -1,11 +1,17 @@
 import pLimit from "p-limit";
 import { HDB_AUTH_TOKEN, OPENWEATHERMAP_API_KEY } from "../env.js";
 
+/**
+* >> TODO:
+  - Instead of returning 1 big json object, chunk it into arrays of 10.
+  - for each chunk, run the 10 items thru a db table insert
+*/
 const CITIES_LIMIT = 1000;
 const WEATHER_LIMIT = 90;
 const PER_SUNNY_CITY_MAX_QTY_LIMIT = 3;
 
-// Weather API Requests limit: 60 calls/minute
+// weather code IDs (src: https://openweathermap.org/weather-conditions )
+// SUNNY_WEATHER_CODES represent the weather codes for sunny & partly sunny weather
 const SUNNY_WEATHER_CODES = [800, 801, 802, 803];
 
 // Settings to for creating 1 request at a time, once per # milliseconds

@@ -1,0 +1,11 @@
+
+###
+# test out Current Weather request
+GET https://api.openweathermap.org/data/2.5/weather?q=austin&appid=KEY
+Content-Type: application/json
+
+###
+# test out Weather Forecast request
+GET https://api.openweathermap.org/data/2.5/forecast?q=austin&appi=KEY
+Content-Type: application/json
+
