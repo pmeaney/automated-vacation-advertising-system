@@ -1,0 +1,78 @@
+# This file uses this VS Code extension, which is a simplified version of a tool like Postman
+#    Name: REST Client
+#    Description: REST Client for Visual Studio Code
+#    VS Marketplace Link: https://marketplace.visualstudio.com/items?itemName=humao.rest-client
+# Note: to use the extension:
+#  - Create a file ending in .http
+#  - Requests follow this structure:
+#      [Three pound signs as separator]
+#      [VERB] [URL]
+#      [Optional headers]
+#      [one empty line]
+#      [JSON Payload]
+#  - When creating a new request, be sure to start with ### which separates requests, otherwise you may encounter a bug.
+
+
+###
+# First, let's check that our schema.graphql file was picked up by the HarperDB application.
+# This operation will describe the current schemas.  We have only one: Dog.  With zero records.
+POST http://localhost:9925/
+Content-Type: application/json
+Authorization: Basic SERCX0FETUlOOnBhc3N3b3Jk
+
+{
+    "operation": "describe_all"
+}
+
+
+###
+# Now lets create a dog record.
+POST http://localhost:9926/Dog
+Content-Type: application/json
+Authorization: Basic SERCX0FETUlOOnBhc3N3b3Jk
+
+{
+	"name": "Harper",
+	"breed": "Labrador",
+	"age": 3,
+	"tricks": ["sits"]
+}
+
+###
+# Now lets create a 2nd dog record.
+POST http://localhost:9926/Dog
+Content-Type: application/json
+Authorization: Basic SERCX0FETUlOOnBhc3N3b3Jk
+
+{
+	"name": "Benji",
+	"breed": "Border collie",
+	"age": 5,
+	"tricks": ["sits", "shakes"]
+}
+
+###
+# Now let's check that Two dogs exist in our Dog table.
+# That operation is defined by our getAll route in routes/index.js:
+GET http://localhost:9926/application-template/getAll
+Content-Type: application/json
+Authorization: Basic SERCX0FETUlOOnBhc3N3b3Jk
+
+###
+# Now let's check out an example of the Operations API, 
+# which allows us to, for example, create a new table via REST API.
+POST http://localhost:9925/
+Content-Type: application/json
+Authorization: Basic SERCX0FETUlOOnBhc3N3b3Jk
+
+{
+    "operation": "create_table",
+    "table": "exampleTable",
+    "primary_key": "id"
+}
+
+###
+# Let's check out a second route.
+GET http://localhost:9926/application-template/getAnotherRoute
+Content-Type: application/json
+Authorization: Basic SERCX0FETUlOOnBhc3N3b3Jk

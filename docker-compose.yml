@@ -1,0 +1,16 @@
+version: "3.8"
+
+services:
+  harperdb:
+    image: harperdb/harperdb:4.3.20
+    container_name: harperdb
+    ports:
+      - 9925:9925
+      - 9926:9926
+    volumes:
+      - ./components:/home/harperdb/hdb/components
+      - ./data-for-hdb:/home/harperdb/hdb/data-for-hdb
+    environment:
+      - HDB_ADMIN_USERNAME=HDB_ADMIN
+      - HDB_ADMIN_PASSWORD=password
+      - THREADS=4

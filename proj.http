@@ -1,0 +1,51 @@
+
+###
+# Create citiesPopList table so we can load data into it.
+POST http://localhost:9925/
+Content-Type: application/json
+Authorization: Basic SERCX0FETUlOOnBhc3N3b3Jk
+
+{
+    "operation": "create_table",
+    "table": "citiesPopList",
+    "primary_key": "id"
+}
+
+###
+# Import Cities & Population csv file via Operations API
+# Data source: https://raw.githubusercontent.com/plotly/datasets/master/us-cities-top-1k.csv
+POST http://localhost:9925/
+Content-Type: application/json
+Authorization: Basic SERCX0FETUlOOnBhc3N3b3Jk
+
+{
+  "operation": "csv_file_load",
+  "action": "insert",
+  "database": "data",
+  "table": "citiesPopList",
+  "file_path": "/home/harperdb/hdb/data-for-hdb/us-cities-top-1k.csv"
+}
+
+###
+# Check our table
+# SELECT * FROM data.citiesPopList ORDER BY Population DESC LIMIT 3
+GET http://localhost:9926/flight-ads-app/getCities?limit=5
+Content-Type: application/json
+Authorization: Basic SERCX0FETUlOOnBhc3N3b3Jk
+
+###
+# Run runMain route
+GET http://localhost:9926/flight-ads-app/runMain
+Content-Type: application/json
+Authorization: Basic SERCX0FETUlOOnBhc3N3b3Jk
+
+###
+# Run Current Weather request route
+GET https://api.openweathermap.org/data/2.5/weather?q=austin&appid=KEY
+Content-Type: application/json
+
+###
+# Run Weather Forecast request route
+GET https://api.openweathermap.org/data/2.5/forecast?q=austin&appi=KEY
+Content-Type: application/json
+
