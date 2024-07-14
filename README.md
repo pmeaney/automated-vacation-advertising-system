@@ -10,7 +10,7 @@ Saluki Solutions has been retained to develop a Proof of Concept project, using 
 
 ### Start it up 🚀
 
-- Clone the repo: `git clone URL`
+- Clone the repo: `git clone https://github.com/pmeaney/automated-vacation-advertising-system.git`
 - Run the project with docker-compose: `docker compose up`
 
 ### API Used
