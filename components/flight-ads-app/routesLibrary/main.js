@@ -61,8 +61,9 @@ Now we have a table of cities and their weather forecast.
 
 import { findSunnyCloudCityMatches } from "./weatherRequests.js";
 
-export const main = async (reply) => {
+export const main = async () => {
   console.log("running main...");
   const response_sunnyCloudyCityMatches = await findSunnyCloudCityMatches();
-  return reply.send(response_sunnyCloudyCityMatches);
+  console.log("Main is done...");
+  return response_sunnyCloudyCityMatches;
 };

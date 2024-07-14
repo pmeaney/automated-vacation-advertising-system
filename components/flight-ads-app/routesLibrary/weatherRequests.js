@@ -1,23 +1,23 @@
 import pLimit from "p-limit";
-import { HDB_AUTH_TOKEN, OPENWEATHERMAP_API_KEY } from "../env.js";
+import {
+  HDB_AUTH_TOKEN,
+  OPENWEATHERMAP_API_KEY,
+  CITIES_LIMIT,
+  WEATHER_LIMIT,
+  PER_SUNNY_CITY_MAX_QTY_LIMIT,
+  SUNNY_WEATHER_CODES,
+  WEATHERAPI_REQUEST_INTERVAL_MS,
+} from "../env.js";
 
 /**
 * >> TODO:
   - Instead of returning 1 big json object, chunk it into arrays of 10.
   - for each chunk, run the 10 items thru a db table insert
 */
-const CITIES_LIMIT = 1000;
-const WEATHER_LIMIT = 90;
-const PER_SUNNY_CITY_MAX_QTY_LIMIT = 3;
-
-// weather code IDs (src: https://openweathermap.org/weather-conditions )
-// SUNNY_WEATHER_CODES represent the weather codes for sunny & partly sunny weather
-const SUNNY_WEATHER_CODES = [800, 801, 802, 803];
-
 // Settings to for creating 1 request at a time, once per # milliseconds
 // Note: This isnt exact but its decently close to making 1 request per # ms
 const limit = pLimit(1); // Only one concurrent request
-const requestInterval = 500; // 500 milliseconds between requests
+// WEATHERAPI_REQUEST_INTERVAL_MS is set to a default of 500 milliseconds-- between requests for weather data
 
 // Function to fetch cities from our table
 const fetchCities = async () => {
@@ -55,6 +55,7 @@ const fetchWeatherDataByCity = async (city) => {
 
       const response = await fetch(apiUrl);
       if (!response.ok) {
+        // If we can't access weather data for a particular city-- maybe it's too small or it has a typo.
         throw new Error(`Failed to fetch weather data for city=${city}`);
       }
       const data = await response.json();
@@ -93,11 +94,16 @@ const fetchWeatherDataByCity = async (city) => {
 
       return weatherConditionId;
     } catch (error) {
-      console.error(error);
+      console.error(
+        "[fetchWeatherDataByCity]: error",
+        error,
+        "is error msg fetch failed?",
+        error === "fetch failed"
+      );
       return null;
     } finally {
       // Ensure the interval is respected
-      await delay(requestInterval);
+      await delay(WEATHERAPI_REQUEST_INTERVAL_MS);
     }
   });
 };
@@ -114,7 +120,6 @@ export const findSunnyCloudCityMatches = async () => {
 
   // Registry to keep track of already searched cities
   const preSearched = {};
-
   // Generate match_id incrementally
   let matchId = 1;
 
@@ -185,5 +190,9 @@ export const findSunnyCloudCityMatches = async () => {
     }
   }
 
+  console.log(
+    "Search for sunnyCloudyMatches done.  Length: ",
+    sunnyCloudyMatches.length
+  );
   return sunnyCloudyMatches;
 };
