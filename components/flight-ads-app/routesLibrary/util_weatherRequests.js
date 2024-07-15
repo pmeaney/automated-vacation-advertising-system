@@ -10,12 +10,8 @@ import {
 
 import pLimit from "p-limit";
 
-// Settings to for creating 1 request at a time, once per # milliseconds
-// Note: This isnt exact but its decently close to making 1 request per # ms
-const limitedConcurrentRequest = pLimit(1); // Only one concurrent request
-// WEATHERAPI_REQUEST_INTERVAL_MS is set to a default of 500 milliseconds-- between requests for weather data
+// const limitedConcurrentRequest = pLimit(1);
 
-// Function to fetch cities from our table
 const fetchCities = async () => {
   const citiesUrl = `http://localhost:9926/flight-ads-app/getCities?limit=${CITIES_LIMIT}`;
   const citiesRequestHeaders = {
@@ -30,22 +26,17 @@ const fetchCities = async () => {
     if (!response.ok) {
       throw new Error(`Failed to fetch cities data`);
     }
-    const data = await response.json();
-    return data;
+    return await response.json();
   } catch (error) {
     console.error(error);
     return [];
   }
 };
 
-// Function to fetch weather forecast (5 days from today) by city name.
-// The API provides a big JSON object of a 5 day forecast, with data for every 3 hours.
-// This function iterates over the forecast data and finds the entry that is closest to 5 days from now.
-// Function to fetch weather forecast (5 days from today) by city name
 const fetchWeatherDataByCity = async (city) => {
   const apiUrl = `https://api.openweathermap.org/data/2.5/forecast?q=${city}&appid=${OPENWEATHERMAP_API_KEY}`;
-  const beginTimeTracker_in_ms = Date.now(); // Capture the begin time in milliseconds since Unix epoch
-  const beginTimeTracker_dt_stamp = new Date().toLocaleString(); // Current date time stamp
+  const beginTimeTracker_in_ms = Date.now();
+  const beginTimeTracker_dt_stamp = new Date().toLocaleString();
 
   try {
     const response = await fetch(apiUrl);
@@ -53,55 +44,38 @@ const fetchWeatherDataByCity = async (city) => {
       throw new Error(`Failed to fetch weather data for city=${city}`);
     }
     const data = await response.json();
-
-    // Get the current date and the date 5 days from now
     const now = new Date();
-    const fiveDaysFromNow = new Date();
-    fiveDaysFromNow.setDate(now.getDate() + 5);
-
-    // Find the forecast closest to 5 days from now
+    const fiveDaysFromNow = new Date(now.setDate(now.getDate() + 5));
     let closestForecast = null;
     let minDiff = Infinity;
 
     data.list.forEach((item) => {
-      const forecastDate = new Date(item.dt * 1000); // Convert UNIX timestamp to Date
+      const forecastDate = new Date(item.dt * 1000);
       const diff = Math.abs(fiveDaysFromNow - forecastDate);
-
       if (diff < minDiff) {
         minDiff = diff;
         closestForecast = item;
       }
     });
 
-    if (!closestForecast) {
-      return null;
-    }
+    if (!closestForecast) return null;
 
-    // Get the weather condition ID from the closest forecast entry
-    const weatherConditionId = closestForecast.weather[0].id;
-    const weatherDesc = closestForecast.weather[0].description;
-
-    // Log the request details
     console.log(
-      `Weather request begin time: ${beginTimeTracker_dt_stamp} (${beginTimeTracker_in_ms} ms) for City ${city} with weatherCode ${weatherConditionId}: ${weatherDesc}`
+      `${city} closestForecastTime: ${closestForecast.dt_txt} (reqTime: ${beginTimeTracker_dt_stamp} (${beginTimeTracker_in_ms} ms). WeatherCode ${closestForecast.weather[0].id}: ${closestForecast.weather[0].description}`
     );
 
-    return weatherConditionId;
+    return {
+      weatherConditionId: closestForecast.weather[0].id,
+      closestForecastTime: closestForecast.dt_txt,
+    };
   } catch (error) {
-    console.error(
-      "[fetchWeatherDataByCity]: error",
-      error,
-      "is error msg fetch failed?",
-      error === "fetch failed"
-    );
+    console.error("[fetchWeatherDataByCity]: error", error);
     return null;
   } finally {
-    // Ensure the interval is respected
     await delay(WEATHERAPI_REQUEST_INTERVAL_MS);
   }
 };
 
-// Function to delay execution respecting milliseconds
 async function delay(ms) {
   await new Promise((resolve) => setTimeout(resolve, ms));
 }
@@ -114,7 +88,6 @@ export const uploadMatchesToMatchTable = async (matchList) => {
       Authorization: `Basic ${HDB_AUTH_TOKEN}`,
     },
   };
-
   const reqBody = {
     operation: "upsert",
     database: "data",
@@ -160,11 +133,15 @@ export const findSunnyCloudCityMatches = async () => {
 
     const sunnyCity = cities[i].City;
     if (preSearched[sunnyCity] === undefined) {
-      const sunnyWeather = await fetchWeatherDataByCity(sunnyCity);
-      preSearched[sunnyCity] = sunnyWeather;
+      const result = await fetchWeatherDataByCity(sunnyCity);
+      if (result) {
+        preSearched[sunnyCity] = result;
+      }
     }
 
-    if (!SUNNY_WEATHER_CODES.includes(preSearched[sunnyCity])) {
+    if (
+      !SUNNY_WEATHER_CODES.includes(preSearched[sunnyCity]?.weatherConditionId)
+    ) {
       continue;
     }
 
@@ -181,17 +158,25 @@ export const findSunnyCloudCityMatches = async () => {
       if (
         cloudyCity === sunnyCity ||
         (preSearched[cloudyCity] &&
-          SUNNY_WEATHER_CODES.includes(preSearched[cloudyCity]))
+          SUNNY_WEATHER_CODES.includes(
+            preSearched[cloudyCity]?.weatherConditionId
+          ))
       ) {
         continue;
       }
 
       if (preSearched[cloudyCity] === undefined) {
-        const cloudyWeather = await fetchWeatherDataByCity(cloudyCity);
-        preSearched[cloudyCity] = cloudyWeather;
+        const result = await fetchWeatherDataByCity(cloudyCity);
+        if (result) {
+          preSearched[cloudyCity] = result;
+        }
       }
 
-      if (SUNNY_WEATHER_CODES.includes(preSearched[cloudyCity])) {
+      if (
+        SUNNY_WEATHER_CODES.includes(
+          preSearched[cloudyCity]?.weatherConditionId
+        )
+      ) {
         continue;
       }
 
@@ -200,6 +185,7 @@ export const findSunnyCloudCityMatches = async () => {
           match_id: matchId++,
           cloudy_orig_city: cloudyCity,
           sunny_dest_city: sunnyCity,
+          closestForecastTime: preSearched[sunnyCity].closestForecastTime, // Add forecast time for sunny city
         });
         cloudyCount++;
       }
