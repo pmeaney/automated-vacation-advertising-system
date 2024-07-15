@@ -51,9 +51,9 @@ export const main = async () => {
   const response_pullWeatherFlightsSetsTable =
     await pullWeatherFlightsSetsTable();
 
-  // const response_getFlightPrices = await getFlightPrices(
-  //   response_pullWeatherFlightsSetsTable
-  // );
+  const response_getFlightPrices = await getFlightPrices(
+    response_pullWeatherFlightsSetsTable
+  );
 
   // ##############################################################
   // ######  Section 3.5: Sort by price & output to SSE       #####
@@ -87,5 +87,5 @@ export const main = async () => {
   // and include some sort of affiliate code tracking mechanism to get credit for each click or conversion.
 
   console.log("Main is done...");
-  return response_pullWeatherFlightsSetsTable;
+  return response_getFlightPrices;
 };

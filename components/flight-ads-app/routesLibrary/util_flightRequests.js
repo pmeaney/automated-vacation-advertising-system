@@ -6,10 +6,6 @@ import {
 } from "../env.js";
 
 async function getAmadeusToken() {
-  // Post req for API Token - https://developers.amadeus.com/get-started/get-started-with-self-service-apis-335
-  // curl "https://test.api.amadeus.com/v1/security/oauth2/token" \
-  //    -H "Content-Type: application/x-www-form-urlencoded" \
-  //    -d "grant_type=client_credentials&client_id={client_id}&client_secret={client_secret}"
   const url = "https://test.api.amadeus.com/v1/security/oauth2/token";
   const headers = {
     "Content-Type": "application/x-www-form-urlencoded",
@@ -32,7 +28,6 @@ async function getAmadeusToken() {
     }
 
     const data = await response.json();
-    console.log("Token received:", data);
     return data.access_token;
   } catch (error) {
     console.error("Error fetching token:", error);
@@ -45,7 +40,7 @@ export const pullWeatherFlightsSetsTable = async () => {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
-      Authorization: `Basic ${HDB_AUTH_TOKEN}`, // Assumes your base64 encoded credentials
+      Authorization: `Basic ${HDB_AUTH_TOKEN}`,
     },
     body: JSON.stringify({
       operation: "sql",
@@ -59,7 +54,6 @@ export const pullWeatherFlightsSetsTable = async () => {
       throw new Error("Network response was not ok");
     }
     const data = await response.json();
-    // console.log(data);
     return data;
   } catch (error) {
     console.error("Failed to fetch data:", error);
@@ -67,22 +61,37 @@ export const pullWeatherFlightsSetsTable = async () => {
   }
 };
 
-const makeFlightPriceRequestWithToken = async (token) => {
-  const url = `${AMADEUS_BASE_URL}/shopping/flight-offers`;
+const analyzeFlightPrices = (flightsData) => {
+  const prices = flightsData.map((flight) => parseFloat(flight.price.total));
+  prices.sort((a, b) => a - b);
+
+  return {
+    count: prices.length,
+    lowestPrice: prices[0] || null,
+    sortedPrices: prices,
+    lowestPrice_flightCode: prices.length
+      ? `${flightsData[0].itineraries[0].segments[0].carrierCode}-${flightsData[0].itineraries[0].segments[0].number}-${flightsData[0].itineraries[0].segments[0].aircraft.code}`
+      : null,
+  };
+};
+
+const makeFlightPriceRequestWithToken = async (token, flight) => {
+  const url = `https://${AMADEUS_BASE_URL}/shopping/flight-offers`;
   const headers = {
     "Content-Type": "application/json",
     Authorization: `Bearer ${token}`,
   };
+  const [date, time] = flight.closestForecastTime.split(" ");
   const body = JSON.stringify({
     currencyCode: "USD",
     originDestinations: [
       {
         id: "1",
-        originLocationCode: "NYC",
-        destinationLocationCode: "MAD",
+        originLocationCode: flight.cloudy_orig_city_iata,
+        destinationLocationCode: flight.sunny_dest_city_iata,
         departureDateTimeRange: {
-          date: "2023-11-01",
-          time: "10:00:00",
+          date: date.replace(/\//g, "-"), // Convert "MM/DD/YYYY" to "MM-DD-YYYY"
+          time: time.slice(0, 8), // Remove AM/PM and use 24-hour format if necessary
         },
       },
     ],
@@ -94,16 +103,7 @@ const makeFlightPriceRequestWithToken = async (token) => {
     ],
     sources: ["GDS"],
     searchCriteria: {
-      maxFlightOffers: 2,
-      flightFilters: {
-        cabinRestrictions: [
-          {
-            cabin: "BUSINESS",
-            coverage: "MOST_SEGMENTS",
-            originDestinationIds: ["1"],
-          },
-        ],
-      },
+      maxFlightOffers: 5,
     },
   });
 
@@ -119,20 +119,19 @@ const makeFlightPriceRequestWithToken = async (token) => {
     }
 
     const data = await response.json();
-    console.log("Flight offers received:", data);
-    return data;
+    const pricingAnalysis = analyzeFlightPrices(data.data);
+    return { ...flight, ...pricingAnalysis };
   } catch (error) {
     console.error("Error fetching flight offers:", error);
+    return { ...flight, error: "Failed to fetch flight offers" };
   }
 };
 
 export const getFlightPrices = async (flightsTableList) => {
   const amadeusAPIToken = await getAmadeusToken();
-  console.log("amadeusAPIToken", amadeusAPIToken);
-
-  const flightPriceList = await makeFlightPriceRequestWithToken(
-    amadeusAPIToken
+  const flightPriceRequests = flightsTableList.map((flight) =>
+    makeFlightPriceRequestWithToken(amadeusAPIToken, flight)
   );
-
-  return flightPriceList();
+  const results = await Promise.all(flightPriceRequests);
+  return results;
 };

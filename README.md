@@ -25,6 +25,94 @@ Saluki Solutions has been retained to develop a Proof of Concept project, using 
       -H 'Authorization: Basic SERCX0FETUlOOnBhc3N3b3Jk'
   ```
 
+# Results
+
+### Here's an example of the data returned by the overall process:
+
+```
+[
+  {
+    "weatherFlightIataSet_id": 1,
+    "__createdtime__": 1721076350615.6953,
+    "__updatedtime__": 1721078576450.6472,
+    "closestForecastTime": "2024-07-20 21:00:00",
+    "cloudy_orig_city": "New York",
+    "cloudy_orig_city_iata": "LGA",
+    "cloudy_orig_state": "NY",
+    "sunny_dest_city": "Los Angeles",
+    "sunny_dest_city_iata": "LAX",
+    "sunny_dest_state": "CA",
+    "count": 5,
+    "lowestPrice": 249.58,
+    "sortedPrices": [
+      249.58,
+      249.58,
+      249.58,
+      306.04,
+      386.16
+    ],
+    "lowestPrice_flightCode": "F9-3423-32N"
+  },
+  {
+    "weatherFlightIataSet_id": 2,
+    "__createdtime__": 1721076350615.6953,
+    "__updatedtime__": 1721078576450.6472,
+    "closestForecastTime": "2024-07-20 21:00:00",
+    "cloudy_orig_city": "New York",
+    "cloudy_orig_city_iata": "LGA",
+    "cloudy_orig_state": "NY",
+    "sunny_dest_city": "Phoenix",
+    "sunny_dest_city_iata": "PHX",
+    "sunny_dest_state": "AZ",
+    "count": 2,
+    "lowestPrice": 229.58,
+    "sortedPrices": [
+      229.58,
+      593.96
+    ],
+    "lowestPrice_flightCode": "F9-3161-32N"
+  },
+  {
+    "weatherFlightIataSet_id": 3,
+    "__createdtime__": 1721076350615.6953,
+    "__updatedtime__": 1721078576450.6472,
+    "closestForecastTime": "2024-07-20 21:00:00",
+    "cloudy_orig_city": "Chicago",
+    "cloudy_orig_city_iata": "ORD",
+    "cloudy_orig_state": "IL",
+    "sunny_dest_city": "Phoenix",
+    "sunny_dest_city_iata": "PHX",
+    "sunny_dest_state": "AZ",
+    "count": 5,
+    "lowestPrice": 576.91,
+    "sortedPrices": [
+      576.91,
+      576.91,
+      606.91,
+      606.91,
+      623.93
+    ],
+    "lowestPrice_flightCode": "UA-1774-7M9"
+  },
+  {
+    "weatherFlightIataSet_id": 4,
+    "__createdtime__": 1721076350615.6953,
+    "__updatedtime__": 1721078576450.6472,
+    "closestForecastTime": "2024-07-20 21:00:00",
+    "cloudy_orig_city": "Houston",
+    "cloudy_orig_city_iata": "SPX",
+    "cloudy_orig_state": "TX",
+    "sunny_dest_city": "Phoenix",
+    "sunny_dest_city_iata": "PHX",
+    "sunny_dest_state": "AZ",
+    "count": 0,
+    "lowestPrice": null,
+    "sortedPrices": [],
+    "lowestPrice_flightCode": null
+  },
+]
+```
+
 ### API Used
 
 - **OpenWeatherMaps**
