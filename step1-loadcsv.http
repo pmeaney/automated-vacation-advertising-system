@@ -1,0 +1,137 @@
+###########################################
+#########      Table Creations    #########
+###########################################
+
+
+###
+# Create citiesPopList table so we can load data into it via CSV.
+POST http://localhost:9925/
+Content-Type: application/json
+Authorization: Basic SERCX0FETUlOOnBhc3N3b3Jk
+
+{
+    "operation": "create_table",
+    "table": "citiesPopList",
+    "primary_key": "id"
+}
+
+
+###
+# Create airportIataCodes table so we can load CSV data into it
+POST http://localhost:9925/
+Content-Type: application/json
+Authorization: Basic SERCX0FETUlOOnBhc3N3b3Jk
+
+{
+    "operation": "create_table",
+    "table": "airportIataCodes",
+    "primary_key": "iata"
+}
+
+###
+# Create sunnyCloudyCityMatches table so we can load data into it via REST API.
+POST http://localhost:9925/
+Content-Type: application/json
+Authorization: Basic SERCX0FETUlOOnBhc3N3b3Jk
+
+{
+    "operation": "create_table",
+    "table": "sunnyCloudyCityMatches",
+    "primary_key": "match_id"
+}
+
+
+
+###
+# Create weatherFlightSets table so we can load data into it.
+POST http://localhost:9925/
+Content-Type: application/json
+Authorization: Basic SERCX0FETUlOOnBhc3N3b3Jk
+
+{
+    "operation": "create_table",
+    "table": "weatherFlightSets",
+    "primary_key": "weatherFlightSet_id"
+}
+
+
+###########################################
+#########      CSV Imports        #########
+###########################################
+
+###
+# Import Cities & Population csv file via Operations API
+# Data source: https://raw.githubusercontent.com/plotly/datasets/master/us-cities-top-1k.csv
+POST http://localhost:9925/
+Content-Type: application/json
+Authorization: Basic SERCX0FETUlOOnBhc3N3b3Jk
+
+{
+  "operation": "csv_file_load",
+  "action": "upsert",
+  "database": "data",
+  "table": "citiesPopList",
+  "file_path": "/home/harperdb/hdb/data-for-hdb/us-cities-top-1k.csv"
+}
+
+
+###
+# Import Airport iata code per city csv file via Operations API
+# Data source: https://raw.githubusercontent.com/plotly/datasets/master/us-cities-top-1k.csv
+POST http://localhost:9925/
+Content-Type: application/json
+Authorization: Basic SERCX0FETUlOOnBhc3N3b3Jk
+
+{
+  "operation": "csv_file_load",
+  "action": "upsert",
+  "database": "data",
+  "table": "airportIataCodes",
+  "file_path": "/home/harperdb/hdb/data-for-hdb/us-airports.csv"
+}
+
+
+###########################################
+#########      Sanity Checks      #########
+#########     Did uploads work?   #########
+###########################################
+
+
+###
+# Check to see if citiesPopList table was created from csv.
+# SELECT * FROM data.citiesPopList ORDER BY Population DESC LIMIT 3
+GET http://localhost:9926/flight-ads-app/getCities?limit=5
+Content-Type: application/json
+Authorization: Basic SERCX0FETUlOOnBhc3N3b3Jk
+
+
+###
+# Check to see if airportIataCodes table was created from csv.
+POST http://localhost:9925/
+Content-Type: application/json
+Authorization: Basic SERCX0FETUlOOnBhc3N3b3Jk
+
+{
+    "operation": "sql",
+    "sql": "SELECT * FROM data.airportIataCodes LIMIT 5"
+}
+
+###
+# Check to see if sunnyCloudyCityMatches table was created from REST API.
+POST http://localhost:9925/
+Content-Type: application/json
+Authorization: Basic SERCX0FETUlOOnBhc3N3b3Jk
+
+{
+    "operation": "sql",
+    "sql": "SELECT * FROM data.sunnyCloudyCityMatches LIMIT 5"
+}
+
+###
+POST http://localhost:9925/
+Content-Type: application/json
+Authorization: Basic SERCX0FETUlOOnBhc3N3b3Jk
+
+{
+    "operation": "describe_all"
+}
