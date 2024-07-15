@@ -133,5 +133,8 @@ export const getFlightPrices = async (flightsTableList) => {
     makeFlightPriceRequestWithToken(amadeusAPIToken, flight)
   );
   const results = await Promise.all(flightPriceRequests);
+  console.log(
+    "### Completed: Step 3 - Requesting flight prices for our Sunny/Cloudy cities"
+  );
   return results;
 };

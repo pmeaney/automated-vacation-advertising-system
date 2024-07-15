@@ -124,7 +124,7 @@ export const uploadMergedIataFlights = async (mergedJsonObject) => {
     }
     const responseData = await response.json();
     console.log(
-      "###  Completed: Step 2 - Merged Sun/Cloud Cities table with Airport IATA Codes table to create new table: weatherFlightSets   ###"
+      "###  Completed: Step 2 - Merged Sunny/Cloudy Cities table with Airport IATA Codes table to create new table: weatherFlightSets   ###"
     );
 
     return responseData;
