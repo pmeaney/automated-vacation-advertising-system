@@ -11,6 +11,7 @@ Saluki Solutions has been retained to develop a Proof of Concept project, using 
 ## Start it up 🚀
 
 - Clone the repo: `git clone https://github.com/pmeaney/automated-vacation-advertising-system.git`
+- You'll need the env.js file. Place it at `./components/flight-ads-app/env.js`. For the env.js file contact Patrick.
 - Setup API keys -- see `./components/flight-ads-app/env.js`
   - OpenWeatherMaps - Weather Forecasts
     - https://openweathermap.org/forecast5
@@ -24,6 +25,7 @@ Saluki Solutions has been retained to develop a Proof of Concept project, using 
       -H 'Content-Type: application/json' \
       -H 'Authorization: Basic SERCX0FETUlOOnBhc3N3b3Jk'
   ```
+- To change the # of cities we run the program on, change the value for this in env.js `LIMIT_OF_CITIES_WEATHERLOOKUP`
 
 ## Results
 
