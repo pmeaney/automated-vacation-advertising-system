@@ -81,6 +81,7 @@ export const mergeMatchesWithIata = async (matchTable, iataTable) => {
 
     acc.push({
       weatherFlightIataSet_id: match.match_id,
+      closestForecastTime: match.closestForecastTime,
       cloudy_orig_city: match.cloudy_orig_city,
       cloudy_orig_state: cloudyOrigInfo.state,
       cloudy_orig_city_iata: cloudyOrigInfo.iata,
