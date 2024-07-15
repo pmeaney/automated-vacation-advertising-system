@@ -40,10 +40,9 @@ Authorization: Basic SERCX0FETUlOOnBhc3N3b3Jk
     "primary_key": "match_id"
 }
 
-
-
 ###
-# Create weatherFlightSets table so we can load data into it.
+# Create weatherFlightSets table so we can load data into it (Via JSON merge) 
+# This is the table with sun/cloud city, plus iata.  Created by mergeMatchesWithIata fn
 POST http://localhost:9925/
 Content-Type: application/json
 Authorization: Basic SERCX0FETUlOOnBhc3N3b3Jk
@@ -51,7 +50,7 @@ Authorization: Basic SERCX0FETUlOOnBhc3N3b3Jk
 {
     "operation": "create_table",
     "table": "weatherFlightSets",
-    "primary_key": "weatherFlightSet_id"
+    "primary_key": "weatherFlightIataSet_id"
 }
 
 
@@ -116,16 +115,6 @@ Authorization: Basic SERCX0FETUlOOnBhc3N3b3Jk
     "sql": "SELECT * FROM data.airportIataCodes LIMIT 5"
 }
 
-###
-# Check to see if sunnyCloudyCityMatches table was created from REST API.
-POST http://localhost:9925/
-Content-Type: application/json
-Authorization: Basic SERCX0FETUlOOnBhc3N3b3Jk
-
-{
-    "operation": "sql",
-    "sql": "SELECT * FROM data.sunnyCloudyCityMatches LIMIT 5"
-}
 
 ###
 POST http://localhost:9925/

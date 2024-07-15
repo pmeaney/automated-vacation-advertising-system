@@ -5,6 +5,29 @@ Content-Type: application/json
 Authorization: Basic SERCX0FETUlOOnBhc3N3b3Jk
 
 
+###
+# ## PREREQUISITE: Run Main fn.
+# Check to see if sunnyCloudyCityMatches table was created from REST API.
+POST http://localhost:9925/
+Content-Type: application/json
+Authorization: Basic SERCX0FETUlOOnBhc3N3b3Jk
+
+{
+    "operation": "sql",
+    "sql": "SELECT * FROM data.sunnyCloudyCityMatches LIMIT 5"
+}
+
+###
+# ## PREREQUISITE: Run Main fn.
+# # Check to weatherFlightSets table-- The table with sun/cloud city, plus iata.
+POST http://localhost:9925/
+Content-Type: application/json
+Authorization: Basic SERCX0FETUlOOnBhc3N3b3Jk
+
+{
+    "operation": "sql",
+    "sql": "SELECT * FROM data.weatherFlightSets LIMIT 5"
+}
 
 
 

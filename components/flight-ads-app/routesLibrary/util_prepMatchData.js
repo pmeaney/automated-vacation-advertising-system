@@ -1,3 +1,5 @@
+import { HDB_AUTH_TOKEN } from "../env.js";
+
 export const pullSunnyCloudyCityMatches = async () => {
   const url = "http://localhost:9925/";
   const options = {
@@ -78,7 +80,7 @@ export const mergeMatchesWithIata = async (matchTable, iataTable) => {
     }
 
     acc.push({
-      matchesWithIata_id: match.match_id,
+      weatherFlightIataSet_id: match.match_id,
       cloudy_orig_city: match.cloudy_orig_city,
       cloudy_orig_state: cloudyOrigInfo.state,
       cloudy_orig_city_iata: cloudyOrigInfo.iata,
@@ -91,4 +93,41 @@ export const mergeMatchesWithIata = async (matchTable, iataTable) => {
   }, []);
 
   return matchesWithIata;
+};
+
+export const uploadMergedIataFlights = async (mergedJsonObject) => {
+  const reqUrl = `http://localhost:9925/`;
+  const reqHeaders = {
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Basic ${HDB_AUTH_TOKEN}`,
+    },
+  };
+
+  const reqBody = {
+    operation: "upsert",
+    database: "data",
+    table: "weatherFlightSets",
+    records: mergedJsonObject,
+  };
+
+  try {
+    const response = await fetch(reqUrl, {
+      method: "POST",
+      headers: reqHeaders.headers,
+      body: JSON.stringify(reqBody),
+    });
+
+    if (!response.ok) {
+      throw new Error(`Failed to fetch uploadMergedIataFlights`);
+    }
+    const responseData = await response.json();
+    console.log(
+      "###  Completed: Step 2 - Created Table of Sun/Cloud Cities with Airport IAT Codes ###"
+    );
+
+    return responseData;
+  } catch (error) {
+    console.error("[uploadMatchesToMatchTable]: Error encountered... ", error);
+  }
 };

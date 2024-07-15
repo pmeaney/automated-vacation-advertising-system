@@ -28,7 +28,7 @@ export const fetchCities = async () => {
       throw new Error(`Failed to fetch cities data`);
     }
     const data = await response.json();
-    return data; // Assuming the API returns the cities array directly
+    return data;
   } catch (error) {
     console.error(error);
     return [];
@@ -115,8 +115,6 @@ export const uploadMatchesToMatchTable = async (matchList) => {
     },
   };
 
-  console.log("matchList", matchList);
-  // console.log("uploadMatchesToMatchTable jsonObject[0]", jsonObject[0]);
   const reqBody = {
     operation: "upsert",
     database: "data",
@@ -138,7 +136,7 @@ export const uploadMatchesToMatchTable = async (matchList) => {
     console.log("responseData, ", responseData);
     console.log("###  Completed: Step 1 - findSunnyCloudCityMatches ###");
 
-    return responseData; // Assuming the API returns the cities array directly
+    return responseData;
   } catch (error) {
     console.error("[uploadMatchesToMatchTable]: Error encountered... ", error);
   }
