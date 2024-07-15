@@ -31,7 +31,7 @@ Taking weather forecasts into consideration, we make a request for Flight Prices
 
 As a result, we have a ready to use process which we can run on a certain cadence (such as twice a day) to get the cheapest flights from Cloudy to Sunny cities (in 5 days) to promote good weather vacations to potential travelers via web or social media ads.
 
-![alt "Example Flight Ad"](./docs/nyc-to-lax.jpg "Example Flight Ad")
+![alt "Example Flight Ad"](./docs/nyc-to-lax-2.jpg "Example Flight Ad")
 
 ### Data example
 
