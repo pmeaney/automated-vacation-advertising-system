@@ -8,7 +8,7 @@ Saluki Solutions has been retained to develop a Proof of Concept project, using 
 
 ![alt "Saluki Solutions"](./docs/saluki-solutions.jpg "Saluki Solutions")
 
-### Start it up 🚀
+## Start it up 🚀
 
 - Clone the repo: `git clone https://github.com/pmeaney/automated-vacation-advertising-system.git`
 - Setup API keys -- see `./components/flight-ads-app/env.js`
@@ -25,9 +25,18 @@ Saluki Solutions has been retained to develop a Proof of Concept project, using 
       -H 'Authorization: Basic SERCX0FETUlOOnBhc3N3b3Jk'
   ```
 
-# Results
+## Results
 
-### Here's an example of the data returned by the overall process:
+Taking weather forecasts into consideration, we make a request for Flight Prices from Cloudy cities to Sunny cities (forecasted 5 days in advance). Processing the data, we return data for the lowest priced flight and publish it on an endpoint via Server Sent Events.
+
+As a result, we have a ready to use process which we can run on a certain cadence (such as twice a day) to get the cheapest flights from Cloudy to Sunny cities (in 5 days) to promote good weather vacations to potential travelers via web or social media ads.
+
+![alt "Example Flight Ad"](./docs/nyc-to-lax.jpg "Example Flight Ad")
+
+### Data example
+
+Here's an example of the data returned by the overall process.
+It returns a list of flights from Cloudy to Sunny cities, including the lowest price offer, and up to 5 alternative ticket prices to compare to. It may return fewer than 5, or even none at all if it does not find matches for those particular airports on that date.
 
 ```
 [
@@ -53,7 +62,6 @@ Saluki Solutions has been retained to develop a Proof of Concept project, using 
     ],
     "lowestPrice_flightCode": "F9-3423-32N"
   },
-  {
     "weatherFlightIataSet_id": 2,
     "__createdtime__": 1721076350615.6953,
     "__updatedtime__": 1721078576450.6472,
@@ -111,6 +119,94 @@ Saluki Solutions has been retained to develop a Proof of Concept project, using 
     "lowestPrice_flightCode": null
   },
 ]
+```
+
+## Here is a representation of how we reach the final dataset.
+
+```javascript
+
+// Load cities CSV into HarperDB
+// Table: citiesPopList
+{
+    "id": "0871afcd-96b4-4aba-95d8-ed5e3c3b640e",
+    "City": "New York",
+    "Population": 8405837,
+    "State": "New York",
+    "__createdtime__": 1721080164634.7595,
+    "__updatedtime__": 1721080164634.7595,
+    "lat": 40.7127837,
+    "lon": -74.00594129999999
+  },
+
+// Load airport iata codes CSV into HarperDB
+// We're interested mainly in using this data to match iata codes to the cities for which we request weather forecasts.
+// Table: airportIataCodes
+{
+    "iata": "00M",  // <-- ########### This is our focus
+    "__createdtime__": 1721080164806.5408,
+    "__updatedtime__": 1721080793681.915,
+    "city": "Bay Springs",
+    "country": "USA",
+    "latitude": 31.95376472,
+    "longitude": -89.23450472,
+    "name": "Thigpen",
+    "state": "MS"
+  }
+
+// Our first request is for Weather data.
+// For each Cloudy city, we search for up to 3 Sunny cities to fly to.
+// We look at the forecasts for the two cities which are closest to exactly 5 days from when the main function runs.
+// Table: sunnyCloudyCityMatches
+{
+    "match_id": 1,
+    "__createdtime__": 1721080169620.8171,
+    "__updatedtime__": 1721080797431.3623,
+    "closestForecastTime": "2024-07-20 21:00:00",
+    "cloudy_orig_city": "New York",
+    "sunny_dest_city": "Los Angeles"
+  }
+
+
+// We then merge in the iata codes for the two cities
+// Table: weatherFlightSets
+{
+    "weatherFlightIataSet_id": 1,
+    "__createdtime__": 1721080169824.4937,
+    "__updatedtime__": 1721080797616.5005,
+    "closestForecastTime": "2024-07-20 21:00:00", // <-- Flight date
+    "cloudy_orig_city": "New York",
+    "cloudy_orig_city_iata": "LGA", // <-- Flight Origin City IataCode
+    "cloudy_orig_state": "NY",
+    "sunny_dest_city": "Los Angeles",
+    "sunny_dest_city_iata": "LAX", // <-- Flight Destination City IataCode
+    "sunny_dest_state": "CA"
+  }
+
+// Lastly, we make a request for Flight Prices
+// We process the data to return a list of up to 5 flights' prices
+// and focus in on the lowest price along with its flight code.
+{
+    "weatherFlightIataSet_id": 1,
+    "__createdtime__": 1721076350615.6953,
+    "__updatedtime__": 1721078576450.6472,
+    "closestForecastTime": "2024-07-20 21:00:00",
+    "cloudy_orig_city": "New York",
+    "cloudy_orig_city_iata": "LGA",
+    "cloudy_orig_state": "NY",
+    "sunny_dest_city": "Los Angeles",
+    "sunny_dest_city_iata": "LAX",
+    "sunny_dest_state": "CA",
+    "count": 5,
+    "lowestPrice": 249.58,
+    "sortedPrices": [
+      249.58,
+      249.58,
+      249.58,
+      306.04,
+      386.16
+    ],
+    "lowestPrice_flightCode": "F9-3423-32N"
+  },
 ```
 
 ### API Used
