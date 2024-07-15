@@ -1,5 +1,11 @@
-import { findSunnyCloudCityMatches } from "./weatherRequests.js";
-import { uploadMatchesToMatchTable } from "./util_weatherRequests.js";
+import {
+  findSunnyCloudCityMatches,
+  uploadMatchesToMatchTable,
+} from "./util_weatherRequests.js";
+import {
+  pullWeatherFlightsSetsTable,
+  getFlightPrices,
+} from "./util_flightRequests.js";
 import {
   pullSunnyCloudyCityMatches,
   pullIataCodeTable,
@@ -35,13 +41,51 @@ export const main = async () => {
   );
   // console.log("response_mergeIataToFlights", response_mergeIataToFlights);
   // Now we can upload the merged data.
-  const response_uploadedMergedIataFlights = await uploadMergedIataFlights(
-    response_mergeIataToFlights
-  );
-  // console.log("response_pullIataCodeTable", response_pullIataCodeTable);
+  await uploadMergedIataFlights(response_mergeIataToFlights);
   // ###############################################################
   // ###### Section Three: For our Matches, Query for Flights ######
   // ###############################################################
+
+  // First, we'll pull all data from weatherFlightSets table.  It contains our origin & destination cities' weather forecasts & IATA codes.
+  // Then, query for flights by passing Iata codes to Flights Pricing REST API
+  const response_pullWeatherFlightsSetsTable =
+    await pullWeatherFlightsSetsTable();
+
+  // const response_getFlightPrices = await getFlightPrices(
+  //   response_pullWeatherFlightsSetsTable
+  // );
+
+  // ##############################################################
+  // ######  Section 3.5: Sort by price & output to SSE       #####
+  // ##############################################################
+  // await sortPrices_OutputToSSE(response_pullWeatherFlightsSetsTable);
+
+  // ################################################################################
+  // ######  Section Four: Query final data & output to SSE                     #####
+  // ###### Status: Leaving for later, once I get SQL join statements to work   #####
+  // ################################################################################
+
+  // From our table, run a dervied data calculation:
+  //  Query flight prices of top 10 cities by pop. in FinalFlightPrices table (prices of our Cloudy->Sunny flights)
+  // #### -> I would need to do a SQL join.  Previously I was unable to do so via Operations API
+  //          So, I'll save that for later, once I learn to get more than a basic SQL query working via Operations API--
+  //          such as Multi-line or really long query or complex query.
+  //  Then, output the results to a SSE Endpoint
+
+  // This would replace "sortPrices_OutputToSSE" in section 3.
+  // await queryPriceTableAndRunSSE();
+
+  // If we were to set our main function into a cron-job or other process to run it on a cadence,
+  // we would then have an example of long polling for derived data and outputting the data to an SSE endpoint.
+  // - It could be the top 10 cities by population
+  // - It could be simply the 100 cities most recently added to the list.
+  // - Or it could b all the cities on the list.
+  // --> In the above example, I limit it to 10.
+
+  // From there, we could watch our SSE endpoint for updates-- via another endpoint which checks it on a certain schedule.
+  // It would would run a process to buy advertisements of the most up to date flight deals via web & social media ads,
+  // and include some sort of affiliate code tracking mechanism to get credit for each click or conversion.
+
   console.log("Main is done...");
-  return response_uploadedMergedIataFlights;
+  return response_pullWeatherFlightsSetsTable;
 };
