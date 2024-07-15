@@ -13,7 +13,9 @@ Saluki Solutions has been retained to develop a Proof of Concept project, using 
 - Clone the repo: `git clone https://github.com/pmeaney/automated-vacation-advertising-system.git`
 - Setup API keys -- see `./components/flight-ads-app/env.js`
   - OpenWeatherMaps - Weather Forecasts
+    - https://openweathermap.org/forecast5
   - Amadeus - Flight Prices
+    - https://developers.amadeus.com/get-started/get-started-with-self-service-apis-335
 - Boot up the project with docker-compose: `docker compose up`
 - Start the application by issuing a GET request to run the main function:
   ```bash

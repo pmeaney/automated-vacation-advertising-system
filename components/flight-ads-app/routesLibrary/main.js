@@ -51,9 +51,9 @@ export const main = async () => {
   const response_pullWeatherFlightsSetsTable =
     await pullWeatherFlightsSetsTable();
 
-  // const response_getFlightPrices = await getFlightPrices(
-  //   response_pullWeatherFlightsSetsTable
-  // );
+  const response_getFlightPrices = await getFlightPrices(
+    response_pullWeatherFlightsSetsTable
+  );
 
   // ##############################################################
   // ######  Section 3.5: Sort by price & output to SSE       #####
