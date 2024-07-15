@@ -213,11 +213,14 @@ It returns a list of flights from Cloudy to Sunny cities, including the lowest p
 
 ### API Used
 
-- **OpenWeatherMaps**
+- **OpenWeatherMaps** - Weather forecast API
   - Docs:
     - [5-day forecast API](https://openweathermap.org/forecast5)
     - The OpenWeatherMaps API structure is convenient as a developer, because it offers codified weather status codes-- Sort of like how http status codes include broad groups and specific codes (i.e. 2XX vs 200 codes), the API offers for example, "Group 2xx: Thunderstorm", vs "201 Thunderstorm Description: thunderstorm with rain", or "202 Thunderstorm Description: thunderstorm with heavy rain"
       - You can find those weather code IDs here: https://openweathermap.org/weather-conditions
+- **Amadeus** - Flight prices API
+  - Docs:
+    - https://developers.amadeus.com/get-started/get-started-with-self-service-apis-335
 
 ### Loading CSV Files locally via Operations API
 
