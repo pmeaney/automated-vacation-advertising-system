@@ -101,7 +101,10 @@ export const uploadMatchesToMatchTable = async (matchList) => {
       throw new Error(`Failed to fetch uploadMatchesToMatchTable`);
     }
     const responseData = await response.json();
-    console.log("responseData, ", responseData);
+    console.log(
+      "[Uploaded matchList to table: sunnyCloudyCityMatches] ",
+      matchList
+    );
     console.log("###  Completed: Step 1 - findSunnyCloudCityMatches ###");
 
     return responseData;

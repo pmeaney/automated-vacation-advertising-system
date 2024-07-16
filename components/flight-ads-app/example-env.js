@@ -12,6 +12,7 @@ export const CITIES_LIMIT = 1000;
 
 // LIMIT_OF_CITIES_WEATHERLOOKUP is the limit of the total cities we want weather for.
 // For testing, 5 cities is good.  For a decent list of flights to rank for value, let's do 90 cities-- which yields 8010 total flights
+// > update: call it MINIMUM_QTY_CITIES_TOFINDMATCHES_FOR for clarity
 export const LIMIT_OF_CITIES_WEATHERLOOKUP = 10;
 
 // PER_SUNNY_CITY_MAX_QTY_LIMIT is the max amount of sunny cities we want in our match table.
