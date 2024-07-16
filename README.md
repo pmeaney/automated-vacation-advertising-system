@@ -38,7 +38,7 @@ As a result, we have a ready to use process which we can run on a certain cadenc
 ### Data example
 
 Here's an example of the data returned by the overall process.
-It returns a list of flights from Cloudy to Sunny cities, including the lowest price offer, and up to 5 alternative ticket prices to compare to. It may return fewer than 5, or even none at all if it does not find matches for those particular airports on that date.
+It returns a list of flights from Cloudy to Sunny cities, including the lowest price offer, and alternative ticket prices to compare to-- up to a total of 5 maximum price examples. It may return fewer than 5, or even none at all if it does not find matches for those particular airports on that date.
 
 ```javascript
 [
