@@ -1,7 +1,5 @@
 // OpenWeather API Key: https://openweathermap.org/full-price#current
-export const OPENWEATHERMAPS_API_KEY = "";
-export const OPENWEATHERMAPS_API_URL =
-  "api.openweathermap.org/data/2.5/forecast";
+export const OPENWEATHERMAP_API_KEY = "";
 
 export const HDB_AUTH_TOKEN = "SERCX0FETUlOOnBhc3N3b3Jk"; // this is the base64 encoded HarperDB username:password credentials shown in docker-compose.yml
 

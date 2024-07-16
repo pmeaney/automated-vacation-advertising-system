@@ -1,7 +1,6 @@
 import {
   HDB_AUTH_TOKEN,
-  OPENWEATHERMAPS_API_KEY,
-  OPENWEATHERMAPS_FORECAST_URL,
+  OPENWEATHERMAP_API_KEY,
   CITIES_LIMIT,
   WEATHERAPI_REQUEST_INTERVAL_MS,
   LIMIT_OF_CITIES_WEATHERLOOKUP,
@@ -30,7 +29,7 @@ const fetchCities = async () => {
 };
 
 const fetchWeatherDataByCity = async (city) => {
-  const apiUrl = `https://${OPENWEATHERMAPS_FORECAST_URL}?q=${city}&appid=${OPENWEATHERMAPS_API_KEY}`;
+  const apiUrl = `https://api.openweathermap.org/data/2.5/forecast?q=${city}&appid=${OPENWEATHERMAP_API_KEY}`;
   const beginTimeTracker_in_ms = Date.now();
   const beginTimeTracker_dt_stamp = new Date().toLocaleString();
 
