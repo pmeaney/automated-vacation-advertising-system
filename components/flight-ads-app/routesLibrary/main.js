@@ -46,7 +46,7 @@ export const main = async () => {
     // Upload the merged data
     await uploadMergedIataFlights(response_mergeIataToFlights);
 
-    // Pull all data from weatherFlightSets table which contains our origin & destination cities' weather forecasts & IATA codes
+    // Pull all data from weatherFlightSets table which contains our origin & destination cities' (selected by weather forecasts) & their IATA codes
     const response_pullWeatherFlightsSetsTable =
       await pullWeatherFlightsSetsTable();
 
