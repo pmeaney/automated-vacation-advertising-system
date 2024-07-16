@@ -134,7 +134,7 @@ export const getFlightPrices = async (flightsTableList) => {
   );
   const results = await Promise.all(flightPriceRequests);
   console.log(
-    "### Completed: Step 3 - Requesting flight prices for our Sunny/Cloudy cities"
+    "###  Completed: Step 3 - Requesting flight prices for our Sunny/Cloudy cities"
   );
   return results;
 };
