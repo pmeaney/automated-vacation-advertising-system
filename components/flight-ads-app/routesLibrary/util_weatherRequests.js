@@ -119,21 +119,19 @@ export const findSunnyCloudCityMatches = async () => {
   let sunnyCloudyMatches = [];
   const cities = await fetchCities();
   const preSearched = {};
+  const uniquePairs = new Set(); // Set to track unique city pairs
   let matchId = 1;
 
-  for (let i = 0; i < cities.length; i++) {
-    if (sunnyCloudyMatches.length >= LIMIT_OF_CITIES_WEATHERLOOKUP) {
-      console.log(
-        `Limit of total city weather lookups reached: ${LIMIT_OF_CITIES_WEATHERLOOKUP}`
-      );
-      break;
-    }
-
+  // label for the outer loop for breaking out of nested loops
+  outerLoop: for (let i = 0; i < cities.length; i++) {
     const sunnyCity = cities[i].City;
-    if (preSearched[sunnyCity] === undefined) {
-      const result = await fetchWeatherDataByCity(sunnyCity);
-      if (result) {
-        preSearched[sunnyCity] = result;
+    if (!preSearched[sunnyCity]) {
+      const weatherData = await fetchWeatherDataByCity(sunnyCity);
+      if (weatherData) {
+        preSearched[sunnyCity] = {
+          weatherConditionId: weatherData.weatherConditionId,
+          closestForecastTime: weatherData.closestForecastTime,
+        };
       }
     }
 
@@ -143,30 +141,19 @@ export const findSunnyCloudCityMatches = async () => {
       continue;
     }
 
-    let cloudyCount = 0;
     for (let j = 0; j < cities.length; j++) {
-      if (
-        i === j ||
-        sunnyCloudyMatches.length >= LIMIT_OF_CITIES_WEATHERLOOKUP
-      ) {
-        break;
-      }
+      if (i === j) continue;
 
       const cloudyCity = cities[j].City;
-      if (
-        cloudyCity === sunnyCity ||
-        (preSearched[cloudyCity] &&
-          SUNNY_WEATHER_CODES.includes(
-            preSearched[cloudyCity]?.weatherConditionId
-          ))
-      ) {
-        continue;
-      }
+      if (cloudyCity === sunnyCity) continue;
 
-      if (preSearched[cloudyCity] === undefined) {
-        const result = await fetchWeatherDataByCity(cloudyCity);
-        if (result) {
-          preSearched[cloudyCity] = result;
+      if (!preSearched[cloudyCity]) {
+        const weatherData = await fetchWeatherDataByCity(cloudyCity);
+        if (weatherData) {
+          preSearched[cloudyCity] = {
+            weatherConditionId: weatherData.weatherConditionId,
+            closestForecastTime: weatherData.closestForecastTime,
+          };
         }
       }
 
@@ -178,14 +165,25 @@ export const findSunnyCloudCityMatches = async () => {
         continue;
       }
 
-      if (cloudyCount < PER_SUNNY_CITY_MAX_QTY_LIMIT) {
+      const pairKey = `${sunnyCity}-${cloudyCity}`;
+      if (
+        !uniquePairs.has(pairKey) &&
+        preSearched[cloudyCity] &&
+        !SUNNY_WEATHER_CODES.includes(
+          preSearched[cloudyCity]?.weatherConditionId
+        )
+      ) {
+        uniquePairs.add(pairKey);
         sunnyCloudyMatches.push({
           match_id: matchId++,
           cloudy_orig_city: cloudyCity,
           sunny_dest_city: sunnyCity,
-          closestForecastTime: preSearched[sunnyCity].closestForecastTime, // Add forecast time for sunny city
+          closestForecastTime: preSearched[cloudyCity].closestForecastTime, // Ensure correct time is used
         });
-        cloudyCount++;
+
+        if (sunnyCloudyMatches.length === LIMIT_OF_CITIES_WEATHERLOOKUP) {
+          break outerLoop; // Break out of all loops if the limit is reached
+        }
       }
     }
   }
