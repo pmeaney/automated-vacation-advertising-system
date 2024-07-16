@@ -8,10 +8,6 @@ import {
   SUNNY_WEATHER_CODES,
 } from "../env.js";
 
-import pLimit from "p-limit";
-
-// const limitedConcurrentRequest = pLimit(1);
-
 const fetchCities = async () => {
   const citiesUrl = `http://localhost:9926/flight-ads-app/getCities?limit=${CITIES_LIMIT}`;
   const citiesRequestHeaders = {
