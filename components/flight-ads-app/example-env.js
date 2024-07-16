@@ -1,5 +1,8 @@
 // OpenWeather API Key: https://openweathermap.org/full-price#current
-export const OPENWEATHERMAP_API_KEY = "";
+export const OPENWEATHERMAPS_API_KEY = "";
+export const OPENWEATHERMAPS_API_URL =
+  "api.openweathermap.org/data/2.5/forecast";
+
 export const HDB_AUTH_TOKEN = "SERCX0FETUlOOnBhc3N3b3Jk"; // this is the base64 encoded HarperDB username:password credentials shown in docker-compose.yml
 
 // Amadeus API keys: https://developers.amadeus.com/get-started/get-started-with-self-service-apis-335

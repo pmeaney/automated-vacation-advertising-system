@@ -1,13 +1,13 @@
 import {
   HDB_AUTH_TOKEN,
-  OPENWEATHERMAP_API_KEY,
+  OPENWEATHERMAPS_API_KEY,
+  OPENWEATHERMAPS_FORECAST_URL,
   CITIES_LIMIT,
   WEATHERAPI_REQUEST_INTERVAL_MS,
   LIMIT_OF_CITIES_WEATHERLOOKUP,
   PER_SUNNY_CITY_MAX_QTY_LIMIT,
   SUNNY_WEATHER_CODES,
 } from "../env.js";
-
 const fetchCities = async () => {
   const citiesUrl = `http://localhost:9926/flight-ads-app/getCities?limit=${CITIES_LIMIT}`;
   const citiesRequestHeaders = {
@@ -30,7 +30,7 @@ const fetchCities = async () => {
 };
 
 const fetchWeatherDataByCity = async (city) => {
-  const apiUrl = `https://api.openweathermap.org/data/2.5/forecast?q=${city}&appid=${OPENWEATHERMAP_API_KEY}`;
+  const apiUrl = `https://${OPENWEATHERMAPS_FORECAST_URL}?q=${city}&appid=${OPENWEATHERMAPS_API_KEY}`;
   const beginTimeTracker_in_ms = Date.now();
   const beginTimeTracker_dt_stamp = new Date().toLocaleString();
 
