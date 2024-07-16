@@ -40,6 +40,8 @@ As a result, we have a ready to use process which we can run on a certain cadenc
 Here's an example of the data returned by the overall process.
 It returns a list of flights from Cloudy to Sunny cities, including the lowest price offer, and up to 5 alternative ticket prices to compare to. It may return fewer than 5, or even none at all if it does not find matches for those particular airports on that date.
 
+This was run on July 15, 2024. We select city pairs based on a weather forecast 5 days in advance. Then, we make a request for flight prices based on that same date (for simplicity). The time is based on the closest 3-hour increment to the time at which I made the request on 7/15/24
+
 ```
 [
   {
@@ -64,6 +66,7 @@ It returns a list of flights from Cloudy to Sunny cities, including the lowest p
     ],
     "lowestPrice_flightCode": "F9-3423-32N"
   },
+  {
     "weatherFlightIataSet_id": 2,
     "__createdtime__": 1721076350615.6953,
     "__updatedtime__": 1721078576450.6472,
