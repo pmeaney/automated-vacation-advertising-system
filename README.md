@@ -38,7 +38,7 @@ As a result, we have a ready to use process which we can run on a certain cadenc
 ### Data example
 
 Here's an example of the data returned by the overall process.
-It returns a list of flights from Cloudy to Sunny cities, including the lowest price offer, and alternative ticket prices to compare to-- up to a total of 5 maximum price examples. It may return fewer than 5, or even none at all if it does not find matches for those particular airports on that date.
+It returns a list of flights from Cloudy to Sunny cities, including the lowest price offer, and alternative ticket prices to compare to-- up to a total of 5 maximum price examples. It may return fewer than 5, or even none at all if it does not find matches for those particular airports on that date. The Airport Codes csv file includes multiple airports per city, so for example, #4, Houston to Phoenix references a SPX "Houston Gulf Airport" which closed down in 2002, rather than Houston's main IAH airport, which is why no matches are found.
 
 ```javascript
 [
