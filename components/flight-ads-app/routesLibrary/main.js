@@ -1,4 +1,5 @@
 import { createAndloadTables } from "./setupProject.js";
+import { testEmitter } from "../routes/index.js";
 
 import {
   findSunnyCloudCityMatches,
@@ -20,6 +21,12 @@ const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
 export const main = async () => {
   console.log("Running main...");
+
+  // Emit an event
+
+  testEmitter.emitEvent("eventToLog", {
+    log: "Running main... in eventToLog",
+  });
 
   try {
     // Create & load initial tables

@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SSE Example</title>
+</head>
+
+<body>
+  <h1>Server-Sent Events Example</h1>
+  <div id="sse-data"></div>
+
+  <script>
+    // Initialize a new EventSource
+    let eventSource = new EventSource('http://localhost:9926/flight-ads-app/publishEvents', {
+      withCredentials: true
+    });
+
+    // Handle incoming messages
+    eventSource.onmessage = (event) => {
+      // Parse the received data
+      let data = JSON.parse(event.data);
+
+      // Display the data on the webpage
+      let sseDataDiv = document.getElementById('sse-data');
+      sseDataDiv.innerHTML += `<p>${JSON.stringify(data)}</p>`;
+    };
+  </script>
+</body>
+
+</html>

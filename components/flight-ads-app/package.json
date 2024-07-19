@@ -2,8 +2,5 @@
   "name": "application-template",
   "version": "1.0.0",
   "description": "A template for building HarperDB applications",
-  "type": "module",
-  "dependencies": {
-    "bluebird": "^3.7.2"
-  }
+  "type": "module"
 }

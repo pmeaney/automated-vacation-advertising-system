@@ -1,4 +1,11 @@
 import { main } from "../routesLibrary/main.js";
+// import { TestEmitter } from "../resources.js";
+// import { EventEmitter } from "events";
+// import fs from "fs";
+
+import { TestEmitter } from "../routesLibrary/testEmitter.js"; // Adjust the path accordingly
+
+export const testEmitter = new TestEmitter("Blah");
 
 const routesIndex = async (server, { hdbCore, logger }) => {
   server.route({
@@ -29,6 +36,104 @@ const routesIndex = async (server, { hdbCore, logger }) => {
       return reply.send(mainResults);
     },
   });
+
+  server.route({
+    url: "/test",
+    method: "GET",
+    handler: (request, reply) => {
+      testEmitter.listen("eventToLog", (data) => {
+        console.log("Event received: ", data);
+        const headers = {
+          "Content-Type": "text/event-stream",
+          Connection: "keep-alive",
+          "Cache-Control": "no-cache",
+        };
+
+        reply.raw.writeHead(200, headers);
+        reply.raw.write(JSON.stringify(data));
+        return reply;
+        // return hdbCore.requestWithoutAuthentication(data);
+      });
+    },
+  });
+
+  // server.route({
+  //   url: "/test",
+  //   method: "GET",
+  //   handler: (request, reply) => {
+  //     testEmitter.listen("eventToLog", (data) => {
+  //       console.log("Event received: ", data);
+  //       return hdbCore.requestWithoutAuthentication(data);
+  //     });
+  //   },
+  // });
+
+  // server.route({
+  //   url: "/listen",
+  //   method: "GET",
+  //   handler: async (request, reply) => {
+  //     const eventEmitter = new EventEmitter();
+  //     eventEmitter.on("blah", () => {
+  //       console.log("blah event seen at /listen");
+  //     });
+  //     // return reply.send({ msg: text });
+  //   },
+  // });
+  // server.route({
+  //   url: "/activate1Event",
+  //   method: "GET",
+  //   handler: async (request, reply) => {
+  //     // const testEmitter = new TestEmitter("someExampleEventStream");
+  //     // testEmitter.emit("eventToLog", { msg: "blah" });
+  //     // const text = "activated";
+  //     // console.log("activated activate1Event", text);
+  //     // return reply.send({ msg: text });
+  //   },
+  // });
+
+  // server.route({
+  //   url: "/activate1Event",
+  //   method: "GET",
+  //   handler: async (request, reply) => {
+  //     const testEmitter = new TestEmitter("someName");
+
+  //     const eventPayload = { key: "value" };
+  //     console.log("emitting event item: ", eventPayload);
+  //     testEmitter.emit("eventToLog", eventPayload);
+  //     testEmitter.emitEvent("blah", eventPayload);
+  //     // client.connect();
+  //     // return reply.send({ msg: "all good" });
+  //   },
+  // });
+
+  // server.route({s
+
+  //   server.route({
+  //     url: "/publishEvents",
+  //     method: "GET",
+  //     handler: (request, reply) => {
+  //       const testEmitter = new TestEmitter("someName");
+
+  //       // Listen to an event
+  //       testEmitter.listen("eventToLog", (data) => {
+  //         console.log("in testEmitter.listen.  Event received: ", data);
+  //         // return reply.send({ data });
+  //         return reply.send({ msg: "Hello " });
+  //       });
+  //     },
+  //   });
+  // };
+
+  //   server.route({
+  //     url: "/ex1",
+  //     method: "GET",
+  //     handler: async (request, reply) => {
+  //       const client = new Example();
+  //       client.connect();
+  //       client.emit("event");
+  //       return reply.send({ msg: "all good" });
+  //     },
+  //   });
 };
 export default routesIndex;
 
