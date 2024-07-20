@@ -1,3 +1,5 @@
+import { testEmitter } from "../routes/index.js";
+
 import {
   HDB_AUTH_TOKEN,
   OPENWEATHERMAP_API_KEY,
@@ -58,6 +60,10 @@ const fetchWeatherDataByCity = async (city) => {
     console.log(
       `${city} closestForecastTime: ${closestForecast.dt_txt} (reqTime: ${beginTimeTracker_dt_stamp} (${beginTimeTracker_in_ms} ms). WeatherCode ${closestForecast.weather[0].id}: ${closestForecast.weather[0].description}`
     );
+
+    testEmitter.emitEvent("eventToLog", {
+      log: `${city} closestForecastTime: ${closestForecast.dt_txt} (reqTime: ${beginTimeTracker_dt_stamp} (${beginTimeTracker_in_ms} ms). WeatherCode ${closestForecast.weather[0].id}: ${closestForecast.weather[0].description}`,
+    });
 
     return {
       weatherConditionId: closestForecast.weather[0].id,

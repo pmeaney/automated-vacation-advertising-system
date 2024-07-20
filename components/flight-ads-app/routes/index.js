@@ -51,7 +51,7 @@ const routesIndex = async (server, { hdbCore, logger }) => {
 
         reply.raw.writeHead(200, headers);
         reply.raw.write(JSON.stringify(data));
-        return reply;
+        // return reply;
         // return hdbCore.requestWithoutAuthentication(data);
       });
     },
