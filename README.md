@@ -29,7 +29,7 @@ Saluki Solutions has been retained to develop a Proof of Concept project, using 
 
 ## Results
 
-Taking weather forecasts into consideration, we make a request for Flight Prices from Cloudy cities to Sunny cities (forecasted 5 days in advance). Processing the data, we return data for the lowest priced flight and publish it on an endpoint via Server Sent Events.
+Taking weather forecasts into consideration, we make a request for Flight Prices from Cloudy cities to Sunny cities (forecasted 5 days in advance). Processing the data, we return data for the lowest priced flight and publish it on a REST API endpoint.
 
 As a result, we have a ready to use process which we can run on a certain cadence (such as twice a day) to get the cheapest flights from Cloudy to Sunny cities (in 5 days) to promote good weather vacations to potential travelers via web or social media ads.
 

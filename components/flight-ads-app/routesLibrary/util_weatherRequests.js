@@ -61,9 +61,13 @@ const fetchWeatherDataByCity = async (city) => {
       `${city} closestForecastTime: ${closestForecast.dt_txt} (reqTime: ${beginTimeTracker_dt_stamp} (${beginTimeTracker_in_ms} ms). WeatherCode ${closestForecast.weather[0].id}: ${closestForecast.weather[0].description}`
     );
 
-    testEmitter.emitEvent("eventToLog", {
-      log: `${city} closestForecastTime: ${closestForecast.dt_txt} (reqTime: ${beginTimeTracker_dt_stamp} (${beginTimeTracker_in_ms} ms). WeatherCode ${closestForecast.weather[0].id}: ${closestForecast.weather[0].description}`,
-    });
+    try {
+      testEmitter.emitEvent("eventToLog", {
+        log: `${city} closestForecastTime: ${closestForecast.dt_txt} (reqTime: ${beginTimeTracker_dt_stamp} (${beginTimeTracker_in_ms} ms). WeatherCode ${closestForecast.weather[0].id}: ${closestForecast.weather[0].description}`,
+      });
+    } catch (error) {
+      console.log("[testEmitter-util_weatherRequests] error: ", error);
+    }
 
     return {
       weatherConditionId: closestForecast.weather[0].id,
