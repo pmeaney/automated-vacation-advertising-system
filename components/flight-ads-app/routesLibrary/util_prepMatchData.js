@@ -1,4 +1,4 @@
-import { HDB_AUTH_TOKEN, LIMIT_OF_CITIES_WEATHERLOOKUP } from "../env.js";
+import { HDB_AUTH_TOKEN } from "../env.js";
 
 export const pullSunnyCloudyCityMatches = async () => {
   const url = "http://localhost:9925/";
@@ -10,7 +10,7 @@ export const pullSunnyCloudyCityMatches = async () => {
     },
     body: JSON.stringify({
       operation: "sql",
-      sql: `SELECT * FROM data.sunnyCloudyCityMatches LIMIT ${LIMIT_OF_CITIES_WEATHERLOOKUP}`,
+      sql: `SELECT * FROM data.sunnyCloudyCityMatches`,
     }),
   };
 

@@ -5,10 +5,12 @@ import {
   OPENWEATHERMAP_API_KEY,
   CITIES_LIMIT,
   WEATHERAPI_REQUEST_INTERVAL_MS,
-  LIMIT_OF_CITIES_WEATHERLOOKUP,
+  CHUNK_OF_CITIES_WEATHERLOOKUP,
+  TOTAL_DESIRED_CITY_PAIRS,
   PER_SUNNY_CITY_MAX_QTY_LIMIT,
   SUNNY_WEATHER_CODES,
 } from "../env.js";
+
 const fetchCities = async () => {
   const citiesUrl = `http://localhost:9926/flight-ads-app/getCities?limit=${CITIES_LIMIT}`;
   const citiesRequestHeaders = {
@@ -25,7 +27,7 @@ const fetchCities = async () => {
     }
     return await response.json();
   } catch (error) {
-    console.error(error);
+    console.error("[fetchCities]: error", error);
     return [];
   }
 };
@@ -61,16 +63,49 @@ const fetchWeatherDataByCity = async (city) => {
       `${city} closestForecastTime: ${closestForecast.dt_txt} (reqTime: ${beginTimeTracker_dt_stamp} (${beginTimeTracker_in_ms} ms). WeatherCode ${closestForecast.weather[0].id}: ${closestForecast.weather[0].description}`
     );
 
-    try {
-      testEmitter.emitEvent("eventToLog", {
-        log: `${city} closestForecastTime: ${closestForecast.dt_txt} (reqTime: ${beginTimeTracker_dt_stamp} (${beginTimeTracker_in_ms} ms). WeatherCode ${closestForecast.weather[0].id}: ${closestForecast.weather[0].description}`,
-      });
-    } catch (error) {
-      console.log("[testEmitter-util_weatherRequests] error: ", error);
-    }
+    // try {
+    //   testEmitter.emitEvent("eventToLog", {
+    //     log: `${city} closestForecastTime: ${closestForecast.dt_txt} (reqTime: ${beginTimeTracker_dt_stamp} (${beginTimeTracker_in_ms} ms). WeatherCode ${closestForecast.weather[0].id}: ${closestForecast.weather[0].description}`,
+    //   });
+    // } catch (error) {
+    //   console.log("[testEmitter-util_weatherRequests] error: ", error);
+    // }
 
+    /**
+    closestForecast looks like this:
+    {
+      dt: 1722535200,
+      main: {
+        temp: 306.2,
+        feels_like: 307.23,
+        temp_min: 306.2,
+        temp_max: 306.2,
+        pressure: 1017,
+        sea_level: 1017,
+        grnd_level: 993,
+        humidity: 41,
+        temp_kf: 0
+      },
+      weather: [
+        {
+          id: 802,
+          main: 'Clouds',
+          description: 'scattered clouds',
+          icon: '03d'
+        }
+      ],
+      clouds: { all: 28 },
+      wind: { speed: 4.57, deg: 158, gust: 5.58 },
+      visibility: 10000,
+      pop: 0,
+      sys: { pod: 'd' },
+      dt_txt: '2024-08-01 18:00:00'
+    }
+    */
     return {
       weatherConditionId: closestForecast.weather[0].id,
+      weatherConditionMain: closestForecast.weather[0].main,
+      weatherConditionDescription: closestForecast.weather[0].description,
       closestForecastTime: closestForecast.dt_txt,
     };
   } catch (error) {
@@ -124,79 +159,180 @@ export const uploadMatchesToMatchTable = async (matchList) => {
 };
 
 export const findSunnyCloudCityMatches = async () => {
-  console.log("###  Begin: Step 1: findSunnyCloudCityMatches ###");
+  console.log("### Begin: Step 1: findSunnyCloudCityMatches ###");
 
-  let sunnyCloudyMatches = [];
-  const cities = await fetchCities();
-  const preSearched = {};
-  const uniquePairs = new Set(); // Set to track unique city pairs
-  let matchId = 1;
+  let allCities = await fetchCities();
+  let weatherDataCache = {};
+  let matches = [];
+  let processedCitiesCount = 0;
+  let totalWeatherRequestsCount = 0; // Initialize the weather request count
 
-  // label for the outer loop for breaking out of nested loops
-  outerLoop: for (let i = 0; i < cities.length; i++) {
-    const sunnyCity = cities[i].City;
-    if (!preSearched[sunnyCity]) {
-      const weatherData = await fetchWeatherDataByCity(sunnyCity);
-      if (weatherData) {
-        preSearched[sunnyCity] = {
-          weatherConditionId: weatherData.weatherConditionId,
-          closestForecastTime: weatherData.closestForecastTime,
-        };
-      }
-    }
+  // Process cities in chunks until we reach the desired number of matches or run out of cities
+  while (
+    matches.length < TOTAL_DESIRED_CITY_PAIRS &&
+    processedCitiesCount < allCities.length
+  ) {
+    // Determine the next chunk of cities to process
+    const endSlice = Math.min(
+      processedCitiesCount + CHUNK_OF_CITIES_WEATHERLOOKUP,
+      allCities.length
+    );
+    const currentChunkOfCities = allCities.slice(
+      processedCitiesCount,
+      endSlice
+    );
 
-    if (
-      !SUNNY_WEATHER_CODES.includes(preSearched[sunnyCity]?.weatherConditionId)
-    ) {
-      continue;
-    }
+    // Maps to track sunny and cloudy cities
+    const sunnyCities = new Map();
+    const cloudyCities = new Map();
 
-    for (let j = 0; j < cities.length; j++) {
-      if (i === j) continue;
-
-      const cloudyCity = cities[j].City;
-      if (cloudyCity === sunnyCity) continue;
-
-      if (!preSearched[cloudyCity]) {
-        const weatherData = await fetchWeatherDataByCity(cloudyCity);
-        if (weatherData) {
-          preSearched[cloudyCity] = {
-            weatherConditionId: weatherData.weatherConditionId,
-            closestForecastTime: weatherData.closestForecastTime,
-          };
-        }
+    // Fetch and categorize weather data for each city in the current chunk
+    for (const city of currentChunkOfCities) {
+      if (!weatherDataCache[city.City]) {
+        const weather = await fetchWeatherDataByCity(city.City);
+        weatherDataCache[city.City] = weather;
+        totalWeatherRequestsCount++; // Increment the count for each weather request made
       }
 
-      if (
-        SUNNY_WEATHER_CODES.includes(
-          preSearched[cloudyCity]?.weatherConditionId
-        )
-      ) {
-        continue;
-      }
-
-      const pairKey = `${sunnyCity}-${cloudyCity}`;
-      if (
-        !uniquePairs.has(pairKey) &&
-        preSearched[cloudyCity] &&
-        !SUNNY_WEATHER_CODES.includes(
-          preSearched[cloudyCity]?.weatherConditionId
-        )
-      ) {
-        uniquePairs.add(pairKey);
-        sunnyCloudyMatches.push({
-          match_id: matchId++,
-          cloudy_orig_city: cloudyCity,
-          sunny_dest_city: sunnyCity,
-          closestForecastTime: preSearched[cloudyCity].closestForecastTime, // Ensure correct time is used
-        });
-
-        if (sunnyCloudyMatches.length === LIMIT_OF_CITIES_WEATHERLOOKUP) {
-          break outerLoop; // Break out of all loops if the limit is reached
+      const weather = weatherDataCache[city.City];
+      if (weather) {
+        if (SUNNY_WEATHER_CODES.includes(weather.weatherConditionId)) {
+          sunnyCities.set(city.City, weather);
+        } else {
+          cloudyCities.set(city.City, weather);
         }
       }
     }
+
+    // Generate matches
+    for (const [sunnyCity, sunnyWeather] of sunnyCities.entries()) {
+      let count = 0; // Track how many matches have been made for the current sunny city
+      for (const [cloudyCity, cloudyWeather] of cloudyCities.entries()) {
+        // Ensure cities do not match with themselves and limit matches per sunny city
+        if (sunnyCity !== cloudyCity && count < PER_SUNNY_CITY_MAX_QTY_LIMIT) {
+          matches.push({
+            match_id: matches.length + 1,
+            cloudy_orig_city: cloudyCity,
+            cloudy_orig_forecast: cloudyWeather.weatherConditionDescription,
+            sunny_dest_city: sunnyCity,
+            sunny_dest_forecast: sunnyWeather.weatherConditionDescription,
+            closestForecastTime: cloudyWeather.closestForecastTime,
+          });
+          count++;
+          if (matches.length >= TOTAL_DESIRED_CITY_PAIRS) break; // Stop if we have enough matches
+        }
+      }
+      if (matches.length >= TOTAL_DESIRED_CITY_PAIRS) break; // Stop processing if we have reached desired match count
+    }
+
+    processedCitiesCount += CHUNK_OF_CITIES_WEATHERLOOKUP; // Update the count of processed cities
   }
 
-  return sunnyCloudyMatches;
+  console.log(
+    `Completed matches search. Total matches found: ${matches.length} via ${totalWeatherRequestsCount} weather requests.`
+  );
+  return matches;
 };
+
+// export const findSunnyCloudCityMatches = async () => {
+//   console.log("###  Begin: Step 1: findSunnyCloudCityMatches ###");
+
+//   let sunnyCloudyMatches = [];
+//   const cities = await fetchCities();
+//   // console.log("cities", cities);
+//   /**
+//   cities is an array containing JSON objects like this:
+//       {
+//     id: '95a5e18e-bda2-4c42-ab8f-a5621889ac9f',
+//     City: 'Milwaukee',
+//     Population: 599164,
+//     State: 'Wisconsin',
+//     __createdtime__: 1722103705601.647,
+//     __updatedtime__: 1722103705601.647,
+//     lat: 43.0389025,
+//     lon: -87.9064736
+//     }
+//   */
+//   const preSearched = {};
+//   const uniquePairs = new Set(); // Set to track unique city pairs
+//   let matchId = 1;
+
+//   // label for the outer loop for breaking out of nested loops
+//   outerLoop: for (let i = 0; i < cities.length; i++) {
+//     const sunnyCity = cities[i].City;
+//     if (!preSearched[sunnyCity]) {
+//       const weatherData = await fetchWeatherDataByCity(sunnyCity);
+//       if (weatherData) {
+//         console.log("preSearched[sunnyCity] weatherData...", weatherData);
+//         /**
+//           weatherData is an array containing JSON objects like this: {
+//             weatherConditionId: 800,
+//             weatherConditionMain: 'Clear',
+//             weatherConditionDescription: 'clear sky',
+//             closestForecastTime: '2024-08-01 18:00:00'
+//           }
+//         */
+//         preSearched[sunnyCity] = weatherData;
+//       }
+//     }
+
+//     if (
+//       !SUNNY_WEATHER_CODES.includes(preSearched[sunnyCity]?.weatherConditionId)
+//     ) {
+//       continue;
+//     }
+
+//     for (let j = 0; j < cities.length; j++) {
+//       if (i === j) continue;
+
+//       const cloudyCity = cities[j].City;
+//       if (cloudyCity === sunnyCity) continue;
+
+//       if (!preSearched[cloudyCity]) {
+//         const weatherData = await fetchWeatherDataByCity(cloudyCity);
+//         if (weatherData) {
+//           /**
+//           weatherData is an array containing JSON objects like this: {
+//             weatherConditionId: 801,
+//             weatherConditionMain: 'Clouds',
+//             weatherConditionDescription: 'few clouds',
+//             closestForecastTime: '2024-08-01 18:00:00'
+//           }
+//         */
+//           preSearched[cloudyCity] = weatherData;
+//         }
+//       }
+
+//       if (
+//         SUNNY_WEATHER_CODES.includes(
+//           preSearched[cloudyCity]?.weatherConditionId
+//         )
+//       ) {
+//         continue;
+//       }
+
+//       const pairKey = `${sunnyCity}-${cloudyCity}`;
+//       if (
+//         !uniquePairs.has(pairKey) &&
+//         preSearched[cloudyCity] &&
+//         !SUNNY_WEATHER_CODES.includes(
+//           preSearched[cloudyCity]?.weatherConditionId
+//         )
+//       ) {
+//         uniquePairs.add(pairKey);
+//         sunnyCloudyMatches.push({
+//           match_id: matchId++,
+//           cloudy_orig_city: cloudyCity,
+//           sunny_dest_city: sunnyCity,
+//           closestForecastTime: preSearched[cloudyCity].closestForecastTime, // Ensure correct time is used
+//         });
+
+//         if (sunnyCloudyMatches.length === CHUNK_OF_CITIES_WEATHERLOOKUP) {
+//           break outerLoop; // Break out of all loops if the limit is reached
+//         }
+//       }
+//     }
+//   }
+
+//   return sunnyCloudyMatches;
+// };

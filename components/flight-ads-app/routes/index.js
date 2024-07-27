@@ -38,6 +38,7 @@ const routesIndex = async (server, { hdbCore, logger }) => {
   });
 
   server.route({
+    // http://localhost:9926/flight-ads-app/test
     url: "/test",
     method: "GET",
     handler: (request, reply) => {

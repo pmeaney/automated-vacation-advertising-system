@@ -4,12 +4,12 @@ export class TestEmitter extends EventEmitter {
   constructor(name) {
     super();
     this.name = name;
-    console.log("created: ", name);
+    // console.log("created: ", name);
   }
 
   // Method to emit events
   emitEvent(eventName, data) {
-    console.log("emitEvent -- eventName", eventName, data);
+    // console.log("emitEvent -- eventName", eventName, data);
     this.emit(eventName, data);
   }
 
