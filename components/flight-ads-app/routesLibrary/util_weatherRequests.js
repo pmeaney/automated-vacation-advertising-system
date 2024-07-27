@@ -7,7 +7,6 @@ import {
   WEATHERAPI_REQUEST_INTERVAL_MS,
   CHUNK_OF_CITIES_WEATHERLOOKUP,
   TOTAL_DESIRED_CITY_PAIRS,
-  PER_SUNNY_CITY_MAX_QTY_LIMIT,
   SUNNY_WEATHER_CODES,
 } from "../env.js";
 
@@ -204,8 +203,6 @@ export const findSunnyCloudCityMatches = async () => {
       if (weather) {
         if (SUNNY_WEATHER_CODES.includes(weather.weatherConditionId)) {
           if (
-            // you try to access a value from a JavaScript Map using .get(), it returns undefined if the key doesn't exist.
-            // The || 0 ensures that if the city hasn't been recorded in the map yet (thus returning undefined), it defaults to 0 instead
             (sunnyCityFrequency.get(city.City) || 0) < sunny_city_maxFrequency
           ) {
             sunnyCities.set(city.City, weather);
@@ -232,7 +229,7 @@ export const findSunnyCloudCityMatches = async () => {
     for (const [sunnyCity, sunnyWeather] of sunnyCities.entries()) {
       let count = 0; // Track matches per sunny city
       for (const [cloudyCity, cloudyWeather] of cloudyCities.entries()) {
-        if (sunnyCity !== cloudyCity && count < PER_SUNNY_CITY_MAX_QTY_LIMIT) {
+        if (sunnyCity !== cloudyCity && count < sunny_city_maxFrequency) {
           matches.push({
             match_id: matches.length + 1,
             cloudy_orig_city: cloudyCity,

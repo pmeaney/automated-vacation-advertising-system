@@ -23,11 +23,6 @@ export const TOTAL_DESIRED_CITY_PAIRS = 10;
 // If not, we lookup another chunk of cities.
 export const CHUNK_OF_CITIES_WEATHERLOOKUP = 20;
 
-// PER_SUNNY_CITY_MAX_QTY_LIMIT is the max amount of sunny cities we want in our match table.
-// This way we don't match one city with the whole list of other cities--
-// it ensures we move on to a new Sunny city after 3 Flights to it.
-export const PER_SUNNY_CITY_MAX_QTY_LIMIT = 3;
-
 // This is the amount of time we want to try to set as a dely between requests for weather data.
 // The Free tier of the weather API has a limit of 1 request per minute (1000ms).
 // Yet, it seems we may be able to make more than that? This allows for only a 100ms pause for example.
