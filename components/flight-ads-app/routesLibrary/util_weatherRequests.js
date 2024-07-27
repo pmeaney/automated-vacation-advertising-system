@@ -167,12 +167,19 @@ export const findSunnyCloudCityMatches = async () => {
   let processedCitiesCount = 0;
   let totalWeatherRequestsCount = 0; // Initialize the weather request count
 
+  // Initialize counters for city appearance frequencies
+  const cloudyCityFrequency = new Map();
+  const sunnyCityFrequency = new Map();
+
+  // Maximum appearances for each city role
+  const cloudy_city_maxFrequency = 3;
+  const sunny_city_maxFrequency = 3;
+
   // Process cities in chunks until we reach the desired number of matches or run out of cities
   while (
     matches.length < TOTAL_DESIRED_CITY_PAIRS &&
     processedCitiesCount < allCities.length
   ) {
-    // Determine the next chunk of cities to process
     const endSlice = Math.min(
       processedCitiesCount + CHUNK_OF_CITIES_WEATHERLOOKUP,
       allCities.length
@@ -182,7 +189,6 @@ export const findSunnyCloudCityMatches = async () => {
       endSlice
     );
 
-    // Maps to track sunny and cloudy cities
     const sunnyCities = new Map();
     const cloudyCities = new Map();
 
@@ -191,24 +197,41 @@ export const findSunnyCloudCityMatches = async () => {
       if (!weatherDataCache[city.City]) {
         const weather = await fetchWeatherDataByCity(city.City);
         weatherDataCache[city.City] = weather;
-        totalWeatherRequestsCount++; // Increment the count for each weather request made
+        totalWeatherRequestsCount++; // Count each weather data request
       }
 
       const weather = weatherDataCache[city.City];
       if (weather) {
         if (SUNNY_WEATHER_CODES.includes(weather.weatherConditionId)) {
-          sunnyCities.set(city.City, weather);
+          if (
+            // you try to access a value from a JavaScript Map using .get(), it returns undefined if the key doesn't exist.
+            // The || 0 ensures that if the city hasn't been recorded in the map yet (thus returning undefined), it defaults to 0 instead
+            (sunnyCityFrequency.get(city.City) || 0) < sunny_city_maxFrequency
+          ) {
+            sunnyCities.set(city.City, weather);
+            sunnyCityFrequency.set(
+              city.City,
+              (sunnyCityFrequency.get(city.City) || 0) + 1
+            );
+          }
         } else {
-          cloudyCities.set(city.City, weather);
+          if (
+            (cloudyCityFrequency.get(city.City) || 0) < cloudy_city_maxFrequency
+          ) {
+            cloudyCities.set(city.City, weather);
+            cloudyCityFrequency.set(
+              city.City,
+              (cloudyCityFrequency.get(city.City) || 0) + 1
+            );
+          }
         }
       }
     }
 
-    // Generate matches
+    // Generate matches ensuring unique pairings with frequency constraints
     for (const [sunnyCity, sunnyWeather] of sunnyCities.entries()) {
-      let count = 0; // Track how many matches have been made for the current sunny city
+      let count = 0; // Track matches per sunny city
       for (const [cloudyCity, cloudyWeather] of cloudyCities.entries()) {
-        // Ensure cities do not match with themselves and limit matches per sunny city
         if (sunnyCity !== cloudyCity && count < PER_SUNNY_CITY_MAX_QTY_LIMIT) {
           matches.push({
             match_id: matches.length + 1,
@@ -219,13 +242,13 @@ export const findSunnyCloudCityMatches = async () => {
             closestForecastTime: cloudyWeather.closestForecastTime,
           });
           count++;
-          if (matches.length >= TOTAL_DESIRED_CITY_PAIRS) break; // Stop if we have enough matches
+          if (matches.length >= TOTAL_DESIRED_CITY_PAIRS) break;
         }
       }
-      if (matches.length >= TOTAL_DESIRED_CITY_PAIRS) break; // Stop processing if we have reached desired match count
+      if (matches.length >= TOTAL_DESIRED_CITY_PAIRS) break;
     }
 
-    processedCitiesCount += CHUNK_OF_CITIES_WEATHERLOOKUP; // Update the count of processed cities
+    processedCitiesCount += CHUNK_OF_CITIES_WEATHERLOOKUP;
   }
 
   console.log(
