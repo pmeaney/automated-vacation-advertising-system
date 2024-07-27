@@ -84,9 +84,11 @@ export const mergeMatchesWithIata = async (matchTable, iataTable) => {
       weatherFlightIataSet_id: match.match_id,
       closestForecastTime: match.closestForecastTime,
       cloudy_orig_city: match.cloudy_orig_city,
+      cloudy_orig_forecast: match.cloudy_orig_forecast,
       cloudy_orig_state: cloudyOrigInfo.state,
       cloudy_orig_city_iata: cloudyOrigInfo.iata,
       sunny_dest_city: match.sunny_dest_city,
+      sunny_dest_forecast: match.sunny_dest_forecast,
       sunny_dest_state: sunnyDestInfo.state,
       sunny_dest_city_iata: sunnyDestInfo.iata,
     });
@@ -98,6 +100,7 @@ export const mergeMatchesWithIata = async (matchTable, iataTable) => {
 };
 
 export const uploadMergedIataFlights = async (mergedJsonObject) => {
+  console.log("mergedJsonObject -- ", mergedJsonObject);
   const reqUrl = `http://localhost:9925/`;
   const reqHeaders = {
     headers: {

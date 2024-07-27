@@ -85,3 +85,15 @@ Authorization: Basic SERCX0FETUlOOnBhc3N3b3Jk
 #           JOIN
 #               data.airportIataCodes destinationAirportCodes ON data.sunnyCloudyCityMatches.sunny_dest_city = destinationAirportCodes.city"
 # }
+
+
+
+###
+POST http://localhost:9925/
+Content-Type: application/json
+Authorization: Basic SERCX0FETUlOOnBhc3N3b3Jk
+
+{
+    "operation": "sql",
+    "sql": "SELECT * FROM data.finalPriceData"
+}
