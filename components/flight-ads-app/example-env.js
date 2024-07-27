@@ -17,7 +17,7 @@ export const CITIES_LIMIT = 1000;
 export const TOTAL_DESIRED_CITY_PAIRS = 10;
 
 // CHUNK_OF_CITIES_WEATHERLOOKUP
-// To limit our interaciton with the Weather API,
+// To limit our interaction with the Weather API,
 // This chunks up the list of cities which we do lookups for... into chunks of 20
 // This will help limit API usage-- This way we only look up weather for up to 20 cities, then determine if we have enough matches.
 // If not, we lookup another chunk of cities.

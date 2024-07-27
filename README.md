@@ -152,6 +152,8 @@ It returns a list of flights from Cloudy to Sunny cities, including the lowest p
     "closestForecastTime": "2024-07-20 21:00:00",
     "cloudy_orig_city": "New York",
     "sunny_dest_city": "Los Angeles"
+    "cloudy_orig_forecast": "overcast clouds",
+    "sunny_dest_forecast": "clear sky",
   }
 
 
@@ -168,6 +170,8 @@ It returns a list of flights from Cloudy to Sunny cities, including the lowest p
     "sunny_dest_city": "Los Angeles",
     "sunny_dest_city_iata": "LAX", // <-- Flight Destination City IataCode
     "sunny_dest_state": "CA"
+    "cloudy_orig_forecast": "overcast clouds",
+    "sunny_dest_forecast": "clear sky",
   }
 
 // Lastly, we make a request for Flight Prices
@@ -184,6 +188,8 @@ It returns a list of flights from Cloudy to Sunny cities, including the lowest p
     "sunny_dest_city": "Los Angeles",
     "sunny_dest_city_iata": "LAX",
     "sunny_dest_state": "CA",
+    "cloudy_orig_forecast": "overcast clouds",
+    "sunny_dest_forecast": "clear sky",
     "count": 5,
     "lowestPrice": 249.58,
     "sortedPrices": [
