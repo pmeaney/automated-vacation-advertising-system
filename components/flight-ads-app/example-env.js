@@ -10,10 +10,18 @@ export const AMADEUS_BASE_URL = "test.api.amadeus.com/v2";
 
 export const CITIES_LIMIT = 1000;
 
-// LIMIT_OF_CITIES_WEATHERLOOKUP is the limit of the total cities we want weather for.
-// For testing, 5 cities is good.  For a decent list of flights to rank for value, let's do 90 cities-- which yields 8010 total flights
-// > update: call it MINIMUM_QTY_CITIES_TOFINDMATCHES_FOR for clarity
-export const LIMIT_OF_CITIES_WEATHERLOOKUP = 10;
+// TOTAL_DESIRED_CITY_PAIRS
+// To limit our interaction with the Flights API,
+// This determines how many city matches we limit our flight search to
+// For example, up to 10 city matches-- Origin (cloudy) to Destination (sunny), for which to query flight price data.
+export const TOTAL_DESIRED_CITY_PAIRS = 10;
+
+// CHUNK_OF_CITIES_WEATHERLOOKUP
+// To limit our interaciton with the Weather API,
+// This chunks up the list of cities which we do lookups for... into chunks of 20
+// This will help limit API usage-- This way we only look up weather for up to 20 cities, then determine if we have enough matches.
+// If not, we lookup another chunk of cities.
+export const CHUNK_OF_CITIES_WEATHERLOOKUP = 20;
 
 // PER_SUNNY_CITY_MAX_QTY_LIMIT is the max amount of sunny cities we want in our match table.
 // This way we don't match one city with the whole list of other cities--
