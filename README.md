@@ -220,8 +220,9 @@ It returns a list of flights from Cloudy to Sunny cities, including the lowest p
       - You can find those weather code IDs here: https://openweathermap.org/weather-conditions
 - **Amadeus** - Flight prices API
   - Docs:
-    - https://developers.amadeus.com/get-started/get-started-with-self-service-apis-335
-    - Test Env Data & API - https://developers.amadeus.com/self-service/apis-docs/guides/developer-guides/test-data/
+    - [Getting started with Amadeus Self Service API](https://developers.amadeus.com/get-started/get-started-with-self-service-apis-335)
+    - [Test Env Data & API](https://developers.amadeus.com/self-service/apis-docs/guides/developer-guides/test-data/)
+    - [API Limit](https://developers.amadeus.com/self-service/apis-docs/guides/developer-guides/api-rate-limits/#list-of-apis-with-the-above-rate-limits): 10 transactions per second, per user
 
 ### Loading CSV Files locally via Operations API
 
