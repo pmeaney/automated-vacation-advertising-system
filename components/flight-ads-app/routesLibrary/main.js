@@ -8,7 +8,7 @@ import {
 import {
   pullWeatherFlightsSetsTable,
   getFlightPrices,
-} from "./util_flightRequests.js";
+} from "./util_flightRequests_plain.js";
 import {
   pullSunnyCloudyCityMatches,
   pullIataCodeTable,
@@ -64,7 +64,6 @@ export const main = async () => {
     const response_getFlightPrices = await getFlightPrices(
       response_pullWeatherFlightsSetsTable
     );
-
     console.log("Main is done...");
     return response_getFlightPrices;
   } catch (error) {

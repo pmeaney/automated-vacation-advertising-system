@@ -1,0 +1,196 @@
+~/localhost-sandbox/1-harperdb/automated-vacation-advertising-system main *1 !1                                                              ✘ INT 20s 03:48:01 PM
+❯ docker compose up
+[+] Building 0.0s (0/0)                                                                                                                                            
+[+] Running 1/0
+ ✔ Container harperdb  Created                                                                                                                                0.0s 
+Attaching to harperdb
+harperdb  | Starting HarperDB...
+harperdb  | 2024-07-27T20:50:13.529Z [main/0] [error]: This server has more memory (7851MB) than HarperDB is licensed for (512MB), this should only be used for educational and development purposes.
+harperdb  | This server has more memory (7851MB) than HarperDB is licensed for (512MB), this should only be used for educational and development purposes.
+harperdb  | 
+harperdb  |                ▒▒▒▓▓▓▓▓▓▓▓▓▓▓▒▒                                
+harperdb  |            ▒▒▒▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▒▒▒▒▒▒▒▒▒▒▒▒                     
+harperdb  |        ▒▒▒▓▓▓▓▓▓▓▓▓▓▓▓▓▓▒▒▒▒▒▒▓▓▓▓▓▓▓▓▓▓▓▒▒                    
+harperdb  |    ▒▒▒▒▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▒▒▒▒▒▒▒▒▒▒▒▒▓▓▓▓▓▓▓▓▒                   
+harperdb  |    ▒▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▓▓▓▓▒                  
+harperdb  |     ▒▒▓▓▓▓▓▓▓▓▓▓▓▓▓▓▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▓▓▓▓▓▒▒                
+harperdb  |     ▒▒▒▒▓▓▓▓▓▓▓▓▓▓▓▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▓▓▓▓▓▓▓▓▓▓▒▒▒▒▒▒          
+harperdb  |    ▒▒▒▒▒▒▒▓▓▓▓▓▓▓▓▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▒▒▒▒▒▒▒▒▒▒▒    
+harperdb  |   ▒▒▒▒▒▒▒▒▒▒▓▓▓▓▓▒▒▒▒▒▒▒▒▒▒▒▒▒▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▒▒▒▒▒▒▒▒▒▒▒▒▒▒
+harperdb  |  ▒▒▒▒▒▒▒▒▒▒▒▒▒▓▓▒▒▒▒▒▒▒▒▒▒▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▒▒▒▒▒▒▒▒▒▒▒▒▒ 
+harperdb  | ▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▒▒▒▒▒▒▒▒▒▒   
+harperdb  |   ▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▒▒▒▒▒▒      
+harperdb  |      ▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒        
+harperdb  |          ▒▒▒▓▓▓▓▓▓▓▓▓▓▓▓▓▓▒▒▒▒▒▒▒▒▒▒▒                          
+harperdb  |             ▒▒▒▓▓▓▓▓▓▓▓▓▓▒▒▒▒▒▒▒▒▒▒▒▒                          
+harperdb  |                ▒▒▒▒▓▓▓▓▓▓▒▒▒▒▒▒▒▒▒▒▒                           
+harperdb  |                    ▒▒▒▓▓▒▒▒▒▒▒▒▒▒▒▒                            
+harperdb  |                       ▒▒▒▒▒▒▒                                  
+harperdb  | 
+harperdb  |                     HarperDB, Inc. Denver, CO.
+harperdb  | 
+harperdb  | |------------- HarperDB 4.3.20 successfully started ------------|
+harperdb  | 2024-07-27T20:50:14.782Z [main/0] [notify]: HarperDB successfully started.
+harperdb  | Running main...
+harperdb  | Creating tables...
+harperdb  | 2024-07-27T20:50:16.026Z [http/3] [error]: Table 'citiesPopList' already exists in 'data'
+harperdb  | 2024-07-27T20:50:16.026Z [http/3] [error]: {"statusCode":400,"http_resp_msg":"Table 'citiesPopList' already exists in 'data'","message":"Table 'citiesPopList' already exists in 'data'","type":"Error","logLevel":"error"}
+harperdb  | 2024-07-27T20:50:16.027Z [http/3] [error]: {"statusCode":400,"http_resp_msg":"Table 'citiesPopList' already exists in 'data'","message":"Table 'citiesPopList' already exists in 'data'","type":"Error","logLevel":"error"}
+harperdb  | 2024-07-27T20:50:16.039Z [http/3] [error]: Table 'airportIataCodes' already exists in 'data'
+harperdb  | 2024-07-27T20:50:16.039Z [http/3] [error]: {"statusCode":400,"http_resp_msg":"Table 'airportIataCodes' already exists in 'data'","message":"Table 'airportIataCodes' already exists in 'data'","type":"Error","logLevel":"error"}
+harperdb  | 2024-07-27T20:50:16.039Z [http/3] [error]: {"statusCode":400,"http_resp_msg":"Table 'airportIataCodes' already exists in 'data'","message":"Table 'airportIataCodes' already exists in 'data'","type":"Error","logLevel":"error"}
+harperdb  | 2024-07-27T20:50:16.042Z [http/3] [error]: Table 'sunnyCloudyCityMatches' already exists in 'data'
+harperdb  | 2024-07-27T20:50:16.042Z [http/3] [error]: {"statusCode":400,"http_resp_msg":"Table 'sunnyCloudyCityMatches' already exists in 'data'","message":"Table 'sunnyCloudyCityMatches' already exists in 'data'","type":"Error","logLevel":"error"}
+harperdb  | 2024-07-27T20:50:16.042Z [http/3] [error]: {"statusCode":400,"http_resp_msg":"Table 'sunnyCloudyCityMatches' already exists in 'data'","message":"Table 'sunnyCloudyCityMatches' already exists in 'data'","type":"Error","logLevel":"error"}
+harperdb  | 2024-07-27T20:50:16.045Z [http/3] [error]: Table 'weatherFlightSets' already exists in 'data'
+harperdb  | 2024-07-27T20:50:16.045Z [http/3] [error]: {"statusCode":400,"http_resp_msg":"Table 'weatherFlightSets' already exists in 'data'","message":"Table 'weatherFlightSets' already exists in 'data'","type":"Error","logLevel":"error"}
+harperdb  | 2024-07-27T20:50:16.045Z [http/3] [error]: {"statusCode":400,"http_resp_msg":"Table 'weatherFlightSets' already exists in 'data'","message":"Table 'weatherFlightSets' already exists in 'data'","type":"Error","logLevel":"error"}
+harperdb  | Tables created successfully.
+harperdb  | Importing CSV data...
+harperdb  | CSV data imported successfully.
+harperdb  | Waiting 3 seconds while csvs are processed.............
+harperdb  | 2024-07-27T20:50:16.749Z [job/5] [notify]: Starting job: 18b9c1a5-b6c6-4d8b-878b-f9cfeba61ebc
+harperdb  | 2024-07-27T20:50:16.755Z [job/6] [notify]: Starting job: 677f4064-6008-4a5f-925b-7f4b5257da5b
+harperdb  | 2024-07-27T20:50:16.969Z [job/5] [notify]: Successfully completed job: 18b9c1a5-b6c6-4d8b-878b-f9cfeba61ebc
+harperdb  | 2024-07-27T20:50:17.074Z [job/6] [notify]: Successfully completed job: 677f4064-6008-4a5f-925b-7f4b5257da5b
+harperdb  | ### Begin: Step 1: findSunnyCloudCityMatches ###
+harperdb  | Querying cities. Limit:  1000
+harperdb  | New York closestForecastTime: 2024-08-01 18:00:00 (reqTime: 7/27/2024, 8:50:19 PM (1722113419193 ms). WeatherCode 800: clear sky
+harperdb  | Los Angeles closestForecastTime: 2024-08-01 18:00:00 (reqTime: 7/27/2024, 8:50:19 PM (1722113419600 ms). WeatherCode 800: clear sky
+harperdb  | Chicago closestForecastTime: 2024-08-01 18:00:00 (reqTime: 7/27/2024, 8:50:19 PM (1722113419782 ms). WeatherCode 801: few clouds
+harperdb  | Houston closestForecastTime: 2024-08-01 18:00:00 (reqTime: 7/27/2024, 8:50:19 PM (1722113419954 ms). WeatherCode 800: clear sky
+harperdb  | Philadelphia closestForecastTime: 2024-08-01 18:00:00 (reqTime: 7/27/2024, 8:50:20 PM (1722113420132 ms). WeatherCode 800: clear sky
+harperdb  | Phoenix closestForecastTime: 2024-08-01 18:00:00 (reqTime: 7/27/2024, 8:50:20 PM (1722113420306 ms). WeatherCode 803: broken clouds
+harperdb  | San Antonio closestForecastTime: 2024-08-01 18:00:00 (reqTime: 7/27/2024, 8:50:20 PM (1722113420479 ms). WeatherCode 801: few clouds
+harperdb  | San Diego closestForecastTime: 2024-08-01 18:00:00 (reqTime: 7/27/2024, 8:50:20 PM (1722113420668 ms). WeatherCode 800: clear sky
+harperdb  | Dallas closestForecastTime: 2024-08-01 18:00:00 (reqTime: 7/27/2024, 8:50:20 PM (1722113420840 ms). WeatherCode 800: clear sky
+harperdb  | San Jose closestForecastTime: 2024-08-01 18:00:00 (reqTime: 7/27/2024, 8:50:21 PM (1722113421013 ms). WeatherCode 804: overcast clouds
+harperdb  | Austin closestForecastTime: 2024-08-01 18:00:00 (reqTime: 7/27/2024, 8:50:21 PM (1722113421187 ms). WeatherCode 802: scattered clouds
+harperdb  | Indianapolis closestForecastTime: 2024-08-01 18:00:00 (reqTime: 7/27/2024, 8:50:21 PM (1722113421365 ms). WeatherCode 804: overcast clouds
+harperdb  | Jacksonville closestForecastTime: 2024-08-01 18:00:00 (reqTime: 7/27/2024, 8:50:21 PM (1722113421555 ms). WeatherCode 801: few clouds
+harperdb  | San Francisco closestForecastTime: 2024-08-01 18:00:00 (reqTime: 7/27/2024, 8:50:21 PM (1722113421729 ms). WeatherCode 804: overcast clouds
+harperdb  | Completed matches search. Total matches found: 10 via 14 weather requests.
+harperdb  | [Uploaded matchList to table: sunnyCloudyCityMatches]  [
+harperdb  |   {
+harperdb  |     match_id: 1,
+harperdb  |     cloudy_orig_city: 'San Jose',
+harperdb  |     cloudy_orig_forecast: 'overcast clouds',
+harperdb  |     sunny_dest_city: 'San Antonio',
+harperdb  |     sunny_dest_forecast: 'few clouds',
+harperdb  |     closestForecastTime: '2024-08-01 18:00:00'
+harperdb  |   },
+harperdb  |   {
+harperdb  |     match_id: 2,
+harperdb  |     cloudy_orig_city: 'Indianapolis',
+harperdb  |     cloudy_orig_forecast: 'overcast clouds',
+harperdb  |     sunny_dest_city: 'San Antonio',
+harperdb  |     sunny_dest_forecast: 'few clouds',
+harperdb  |     closestForecastTime: '2024-08-01 18:00:00'
+harperdb  |   },
+harperdb  |   {
+harperdb  |     match_id: 3,
+harperdb  |     cloudy_orig_city: 'San Francisco',
+harperdb  |     cloudy_orig_forecast: 'overcast clouds',
+harperdb  |     sunny_dest_city: 'San Antonio',
+harperdb  |     sunny_dest_forecast: 'few clouds',
+harperdb  |     closestForecastTime: '2024-08-01 18:00:00'
+harperdb  |   },
+harperdb  |   {
+harperdb  |     match_id: 4,
+harperdb  |     cloudy_orig_city: 'San Jose',
+harperdb  |     cloudy_orig_forecast: 'overcast clouds',
+harperdb  |     sunny_dest_city: 'San Diego',
+harperdb  |     sunny_dest_forecast: 'clear sky',
+harperdb  |     closestForecastTime: '2024-08-01 18:00:00'
+harperdb  |   },
+harperdb  |   {
+harperdb  |     match_id: 5,
+harperdb  |     cloudy_orig_city: 'Indianapolis',
+harperdb  |     cloudy_orig_forecast: 'overcast clouds',
+harperdb  |     sunny_dest_city: 'San Diego',
+harperdb  |     sunny_dest_forecast: 'clear sky',
+harperdb  |     closestForecastTime: '2024-08-01 18:00:00'
+harperdb  |   },
+harperdb  |   {
+harperdb  |     match_id: 6,
+harperdb  |     cloudy_orig_city: 'San Francisco',
+harperdb  |     cloudy_orig_forecast: 'overcast clouds',
+harperdb  |     sunny_dest_city: 'San Diego',
+harperdb  |     sunny_dest_forecast: 'clear sky',
+harperdb  |     closestForecastTime: '2024-08-01 18:00:00'
+harperdb  |   },
+harperdb  |   {
+harperdb  |     match_id: 7,
+harperdb  |     cloudy_orig_city: 'San Jose',
+harperdb  |     cloudy_orig_forecast: 'overcast clouds',
+harperdb  |     sunny_dest_city: 'Dallas',
+harperdb  |     sunny_dest_forecast: 'clear sky',
+harperdb  |     closestForecastTime: '2024-08-01 18:00:00'
+harperdb  |   },
+harperdb  |   {
+harperdb  |     match_id: 8,
+harperdb  |     cloudy_orig_city: 'Indianapolis',
+harperdb  |     cloudy_orig_forecast: 'overcast clouds',
+harperdb  |     sunny_dest_city: 'Dallas',
+harperdb  |     sunny_dest_forecast: 'clear sky',
+harperdb  |     closestForecastTime: '2024-08-01 18:00:00'
+harperdb  |   },
+harperdb  |   {
+harperdb  |     match_id: 9,
+harperdb  |     cloudy_orig_city: 'San Francisco',
+harperdb  |     cloudy_orig_forecast: 'overcast clouds',
+harperdb  |     sunny_dest_city: 'Dallas',
+harperdb  |     sunny_dest_forecast: 'clear sky',
+harperdb  |     closestForecastTime: '2024-08-01 18:00:00'
+harperdb  |   },
+harperdb  |   {
+harperdb  |     match_id: 10,
+harperdb  |     cloudy_orig_city: 'San Jose',
+harperdb  |     cloudy_orig_forecast: 'overcast clouds',
+harperdb  |     sunny_dest_city: 'Austin',
+harperdb  |     sunny_dest_forecast: 'scattered clouds',
+harperdb  |     closestForecastTime: '2024-08-01 18:00:00'
+harperdb  |   }
+harperdb  | ]
+harperdb  | ###  Completed: Step 1 - findSunnyCloudCityMatches ###
+harperdb  | ###  Completed: Step 2 - Merged Sunny/Cloudy Cities table with Airport IATA Codes table to create new table: weatherFlightSets   ###
+harperdb  | San Jose-San Antonio --- request body obj: {"currencyCode":"USD","originDestinations":[{"id":"1","originLocationCode":"SJC","destinationLocationCode":"SSF","departureDateTimeRange":{"date":"2024-08-01","time":"18:00:00"}}],"travelers":[{"id":"1","travelerType":"ADULT"}],"sources":["GDS"],"searchCriteria":{"maxFlightOffers":5}}
+harperdb  | Indianapolis-San Antonio --- request body obj: {"currencyCode":"USD","originDestinations":[{"id":"1","originLocationCode":"UMP","destinationLocationCode":"SSF","departureDateTimeRange":{"date":"2024-08-01","time":"18:00:00"}}],"travelers":[{"id":"1","travelerType":"ADULT"}],"sources":["GDS"],"searchCriteria":{"maxFlightOffers":5}}
+harperdb  | 2024-07-27T20:50:24.371Z [http/1] [error]: Error fetching flight offers: Error: HTTP error! Status: 400
+harperdb  |     at file:///home/harperdb/hdb/components/flight-ads-app/routesLibrary/util_flightRequests.js:132:15
+harperdb  |     at processTicksAndRejections (node:internal/process/task_queues:95:5)
+harperdb  | San Francisco-San Antonio --- request body obj: {"currencyCode":"USD","originDestinations":[{"id":"1","originLocationCode":"SFO","destinationLocationCode":"SSF","departureDateTimeRange":{"date":"2024-08-01","time":"18:00:00"}}],"travelers":[{"id":"1","travelerType":"ADULT"}],"sources":["GDS"],"searchCriteria":{"maxFlightOffers":5}}
+harperdb  | Error fetching flight offers: Error: HTTP error! Status: 400
+harperdb  |     at file:///home/harperdb/hdb/components/flight-ads-app/routesLibrary/util_flightRequests.js:132:15
+harperdb  |     at processTicksAndRejections (node:internal/process/task_queues:95:5)
+harperdb  | San Jose-San Diego --- request body obj: {"currencyCode":"USD","originDestinations":[{"id":"1","originLocationCode":"SJC","destinationLocationCode":"SDM","departureDateTimeRange":{"date":"2024-08-01","time":"18:00:00"}}],"travelers":[{"id":"1","travelerType":"ADULT"}],"sources":["GDS"],"searchCriteria":{"maxFlightOffers":5}}
+harperdb  | Indianapolis-San Diego --- request body obj: {"currencyCode":"USD","originDestinations":[{"id":"1","originLocationCode":"UMP","destinationLocationCode":"SDM","departureDateTimeRange":{"date":"2024-08-01","time":"18:00:00"}}],"travelers":[{"id":"1","travelerType":"ADULT"}],"sources":["GDS"],"searchCriteria":{"maxFlightOffers":5}}
+harperdb  | 2024-07-27T20:50:25.778Z [http/1] [error]: Error fetching flight offers: Error: HTTP error! Status: 400
+harperdb  |     at file:///home/harperdb/hdb/components/flight-ads-app/routesLibrary/util_flightRequests.js:132:15
+harperdb  |     at processTicksAndRejections (node:internal/process/task_queues:95:5)
+harperdb  | San Francisco-San Diego --- request body obj: {"currencyCode":"USD","originDestinations":[{"id":"1","originLocationCode":"SFO","destinationLocationCode":"SDM","departureDateTimeRange":{"date":"2024-08-01","time":"18:00:00"}}],"travelers":[{"id":"1","travelerType":"ADULT"}],"sources":["GDS"],"searchCriteria":{"maxFlightOffers":5}}
+harperdb  | Error fetching flight offers: Error: HTTP error! Status: 400
+harperdb  |     at file:///home/harperdb/hdb/components/flight-ads-app/routesLibrary/util_flightRequests.js:132:15
+harperdb  |     at processTicksAndRejections (node:internal/process/task_queues:95:5)
+harperdb  | 2024-07-27T20:50:25.968Z [http/1] [error]: Error fetching flight offers: Error: HTTP error! Status: 429
+harperdb  |     at file:///home/harperdb/hdb/components/flight-ads-app/routesLibrary/util_flightRequests.js:132:15
+harperdb  |     at processTicksAndRejections (node:internal/process/task_queues:95:5)
+harperdb  | San Jose-Dallas --- request body obj: {"currencyCode":"USD","originDestinations":[{"id":"1","originLocationCode":"SJC","destinationLocationCode":"RBD","departureDateTimeRange":{"date":"2024-08-01","time":"18:00:00"}}],"travelers":[{"id":"1","travelerType":"ADULT"}],"sources":["GDS"],"searchCriteria":{"maxFlightOffers":5}}
+harperdb  | Error fetching flight offers: Error: HTTP error! Status: 429
+harperdb  |     at file:///home/harperdb/hdb/components/flight-ads-app/routesLibrary/util_flightRequests.js:132:15
+harperdb  |     at processTicksAndRejections (node:internal/process/task_queues:95:5)
+harperdb  | Indianapolis-Dallas --- request body obj: {"currencyCode":"USD","originDestinations":[{"id":"1","originLocationCode":"UMP","destinationLocationCode":"RBD","departureDateTimeRange":{"date":"2024-08-01","time":"18:00:00"}}],"travelers":[{"id":"1","travelerType":"ADULT"}],"sources":["GDS"],"searchCriteria":{"maxFlightOffers":5}}
+harperdb  | 2024-07-27T20:50:26.640Z [http/1] [error]: Error fetching flight offers: Error: HTTP error! Status: 400
+harperdb  |     at file:///home/harperdb/hdb/components/flight-ads-app/routesLibrary/util_flightRequests.js:132:15
+harperdb  |     at processTicksAndRejections (node:internal/process/task_queues:95:5)
+harperdb  | San Francisco-Dallas --- request body obj: {"currencyCode":"USD","originDestinations":[{"id":"1","originLocationCode":"SFO","destinationLocationCode":"RBD","departureDateTimeRange":{"date":"2024-08-01","time":"18:00:00"}}],"travelers":[{"id":"1","travelerType":"ADULT"}],"sources":["GDS"],"searchCriteria":{"maxFlightOffers":5}}
+harperdb  | Error fetching flight offers: Error: HTTP error! Status: 400
+harperdb  |     at file:///home/harperdb/hdb/components/flight-ads-app/routesLibrary/util_flightRequests.js:132:15
+harperdb  |     at processTicksAndRejections (node:internal/process/task_queues:95:5)
+harperdb  | San Jose-Austin --- request body obj: {"currencyCode":"USD","originDestinations":[{"id":"1","originLocationCode":"SJC","destinationLocationCode":"AUS","departureDateTimeRange":{"date":"2024-08-01","time":"18:00:00"}}],"travelers":[{"id":"1","travelerType":"ADULT"}],"sources":["GDS"],"searchCriteria":{"maxFlightOffers":5}}
+harperdb  | 2024-07-27T20:50:27.222Z [http/1] [error]: Error fetching flight offers: Error: HTTP error! Status: 429
+harperdb  |     at file:///home/harperdb/hdb/components/flight-ads-app/routesLibrary/util_flightRequests.js:132:15
+harperdb  |     at processTicksAndRejections (node:internal/process/task_queues:95:5)
+harperdb  | Error fetching flight offers: Error: HTTP error! Status: 429
+harperdb  |     at file:///home/harperdb/hdb/components/flight-ads-app/routesLibrary/util_flightRequests.js:132:15
+harperdb  |     at processTicksAndRejections (node:internal/process/task_queues:95:5)

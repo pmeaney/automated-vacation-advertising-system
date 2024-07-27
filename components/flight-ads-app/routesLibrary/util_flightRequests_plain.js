@@ -1,14 +1,13 @@
-import pLimit from "p-limit";
-
 import {
   HDB_AUTH_TOKEN,
   AMADEUS_API_KEY,
   AMADEUS_API_SECRET,
   AMADEUS_BASE_URL,
 } from "../env.js";
+import pLimit from "p-limit";
 
-const DELAY_MS = 500;
-const CONCURRENT_REQUESTS = 1;
+// Helper function to introduce a delay
+const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
 async function getAmadeusToken() {
   const url = "https://test.api.amadeus.com/v1/security/oauth2/token";
@@ -80,76 +79,81 @@ const analyzeFlightPrices = (flightsData) => {
   };
 };
 
-// Function to delay execution
-const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
-
-// Function to make requests with control over concurrency and delay
-const makeFlightPriceRequestWithToken = async (token, flight, limit) => {
-  await limit(async () => {
-    const url = `https://${AMADEUS_BASE_URL}/shopping/flight-offers`;
-    const headers = {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${token}`,
-    };
-    const [date, time] = flight.closestForecastTime.split(" ");
-    const body = JSON.stringify({
-      currencyCode: "USD",
-      originDestinations: [
-        {
-          id: "1",
-          originLocationCode: flight.cloudy_orig_city_iata,
-          destinationLocationCode: flight.sunny_dest_city_iata,
-          departureDateTimeRange: {
-            date: date.replace(/\//g, "-"), // Convert "MM/DD/YYYY" to "MM-DD-YYYY"
-            time: time.slice(0, 8), // Remove AM/PM and use 24-hour format if necessary
-          },
+const makeFlightPriceRequestWithToken = async (token, flight) => {
+  const url = `https://${AMADEUS_BASE_URL}/shopping/flight-offers`;
+  const headers = {
+    "Content-Type": "application/json",
+    Authorization: `Bearer ${token}`,
+  };
+  const [date, time] = flight.closestForecastTime.split(" ");
+  const body = JSON.stringify({
+    currencyCode: "USD",
+    originDestinations: [
+      {
+        id: "1",
+        originLocationCode: flight.cloudy_orig_city_iata,
+        destinationLocationCode: flight.sunny_dest_city_iata,
+        departureDateTimeRange: {
+          date: date.replace(/\//g, "-"), // Convert "MM/DD/YYYY" to "MM-DD-YYYY"
+          time: time.slice(0, 8), // Remove AM/PM and use 24-hour format if necessary
         },
-      ],
-      travelers: [
-        {
-          id: "1",
-          travelerType: "ADULT",
-        },
-      ],
-      sources: ["GDS"],
-      searchCriteria: {
-        maxFlightOffers: 5,
       },
-    });
-
-    try {
-      const response = await fetch(url, {
-        method: "POST",
-        headers: headers,
-        body: body,
-      });
-
-      if (!response.ok) {
-        throw new Error(`HTTP error! Status: ${response.status}`);
-      }
-
-      const data = await response.json();
-      const pricingAnalysis = analyzeFlightPrices(data.data);
-      return { ...flight, ...pricingAnalysis };
-    } catch (error) {
-      console.error("Error fetching flight offers:", error);
-      return { ...flight, error: "Failed to fetch flight offers" };
-    }
+    ],
+    travelers: [
+      {
+        id: "1",
+        travelerType: "ADULT",
+      },
+    ],
+    sources: ["GDS"],
+    searchCriteria: {
+      maxFlightOffers: 5,
+    },
   });
 
-  // Wait after each request to respect the rate limit
-  await delay(DELAY_MS); // Adjust the delay to manage the rate (500 ms for 2 requests per second)
+  try {
+    const response = await fetch(url, {
+      method: "POST",
+      headers: headers,
+      body: body,
+    });
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! Status: ${response.status}`);
+    }
+
+    const data = await response.json();
+    const pricingAnalysis = analyzeFlightPrices(data.data);
+    const flightPricesObjectToReturn = { ...flight, ...pricingAnalysis };
+    console.log(
+      `Received Flight Price data for ${flight.cloudy_orig_city}-${flight.sunny_dest_city}`
+    );
+    return flightPricesObjectToReturn;
+  } catch (error) {
+    console.error(
+      `Error during request for Flight Price data for ${flight.cloudy_orig_city}-${flight.sunny_dest_city}.  Error is:`,
+      error
+    );
+    return { ...flight, error: "Failed to fetch flight offers" };
+  }
 };
 
 export const getFlightPrices = async (flightsTableList) => {
+  const limit = pLimit(2); // 2 concurrent requests
   const amadeusAPIToken = await getAmadeusToken();
-  const limit = pLimit(CONCURRENT_REQUESTS); // Limit concurrent tasks
   const flightPriceRequests = flightsTableList.map((flight) =>
-    makeFlightPriceRequestWithToken(amadeusAPIToken, flight, limit)
+    limit(async () => {
+      const result = await makeFlightPriceRequestWithToken(
+        amadeusAPIToken,
+        flight
+      );
+      await delay(500); // Delay to maintain a maximum of 2 requests per second
+      return result;
+    })
   );
   const results = await Promise.all(flightPriceRequests);
   console.log(
-    "### Completed: Step 3 - Requesting flight prices for our Sunny/Cloudy cities"
+    "###  Completed: Step 3 - Requesting flight prices for our Sunny/Cloudy cities"
   );
   return results;
 };

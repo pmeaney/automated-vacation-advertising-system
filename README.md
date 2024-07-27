@@ -223,6 +223,7 @@ It returns a list of flights from Cloudy to Sunny cities, including the lowest p
     - [Getting started with Amadeus Self Service API](https://developers.amadeus.com/get-started/get-started-with-self-service-apis-335)
     - [Test Env Data & API](https://developers.amadeus.com/self-service/apis-docs/guides/developer-guides/test-data/)
     - [API Limit](https://developers.amadeus.com/self-service/apis-docs/guides/developer-guides/api-rate-limits/#list-of-apis-with-the-above-rate-limits): 10 transactions per second, per user
+    - Initially I was able to use plain nodeJS fetch request for Amadeus data. Then was getting 400 error (malformed request). So, as an alterntive, here's [an official amadeus docs example of making a request for flight data using the Amadeus Node SDK's functions](https://developers.amadeus.com/blog/flight-booking-app-angular-1) intead.
 
 ### Loading CSV Files locally via Operations API
 
