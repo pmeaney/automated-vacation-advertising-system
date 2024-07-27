@@ -70,7 +70,7 @@ const analyzeFlightPrices = (flightsData) => {
   prices.sort((a, b) => a - b);
 
   return {
-    count: prices.length,
+    flightQty: prices.length,
     lowestPrice: prices[0] || null,
     sortedPrices: prices,
     lowestPrice_flightCode: prices.length

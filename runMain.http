@@ -97,3 +97,40 @@ Authorization: Basic SERCX0FETUlOOnBhc3N3b3Jk
     "operation": "sql",
     "sql": "SELECT * FROM data.finalPriceData"
 }
+
+
+###
+POST http://localhost:9925/
+Content-Type: application/json
+Authorization: Basic SERCX0FETUlOOnBhc3N3b3Jk
+
+{
+    "operation": "sql",
+    "sql": "SELECT * FROM data.citiesPopList"
+}
+
+# cloudy_orig_city sunny_dest_city
+###
+# POST http://localhost:9925/
+# Content-Type: application/json
+# Authorization: Basic SERCX0FETUlOOnBhc3N3b3Jk
+
+# {
+#     "operation": "sql",
+#     "sql": "SELECT Population FROM data.citiesPopList FULL OUTER JOIN data.finalPriceData.cloudy_orig_city ON data.citiesPopList.Population = finalPriceData.cloudy_orig_city"
+# # }
+# Above result
+# harperdb  | ... data.finalPriceData.cloudy_orig_city ON
+# harperdb  | -----------------------^
+# harperdb  | Expecting 'LITERAL', 'BRALITERAL', 'EOF', 'EndTransaction', 'WITH', 'COMMA', 'AS', 'LPAR', 'RPAR', 'SEARCH', 'PIVOT', 'FOR', 'UNPIVOT', 'ORDER', 'EQ', 'WHERE', 'DOLLAR', 'AT', 'SET', 'TO', 'VALUE', 'COLON', 'NOT', 'IF', 'UNION', 'INTERSECT', 'EXCEPT', 'QUESTION', 'FROM', 'UNIQUE', 'SELECT', 'CROSS', 'OUTER', 'NATURAL', 'JOIN', 'INNER', 'LEFT', 'RIGHT', 'FULL', 'SEMI', 'ANTI', 'ON', 'USING', 'GROUP', 'LIMIT', 'OFFSET', 'JAVASCRIPT', 'CREATE', 'REPLACE', 'NULL', 'BRAQUESTION', 'END', 'ELSE', 'UPDATE', 'DELETE', 'INSERT', 'DEFAULT', 'VALUES', 'IDENTITY', 'CHECK', 'PRIMARY', 'FOREIGN', 'REFERENCES', 'DROP', 'ALTER', 'RENAME', 'ADD', 'MODIFY', 'ATTACH', 'DETACH', 'USE', 'SHOW', 'SOURCE', 'ASSERT', 'ATLBRA', 'LCUR', 'COMMIT', 'ROLLBACK', 'BEGIN', 'WHILE', 'CONTINUE', 'BREAK', 'PRINT', 'REQUIRE', 'ECHO', 'DECLARE', 'TRUNCATE', 'MERGE', 'COLONDASH', 'QUESTIONDASH', 'CALL', 'BEFORE', 'AFTER', 'INSTEAD', 'REINDEX', 'GO', 'SEMICOLON', got 'DOT'
+
+# cloudy_orig_city sunny_dest_city
+###
+POST http://localhost:9925/
+Content-Type: application/json
+Authorization: Basic SERCX0FETUlOOnBhc3N3b3Jk
+
+{
+    "operation": "sql",
+    "sql": "SELECT fp.closestForecastTime, fp.cloudy_orig_city, fp.cloudy_orig_city_iata, fp.cloudy_orig_forecast, fp.cloudy_orig_state, fp.lowestPrice, fp.lowestPrice_flightCode, fp.flightQty, fp.sortedPrices, fp.sunny_dest_city, fp.sunny_dest_city_iata, fp.sunny_dest_forecast, fp.sunny_dest_state, fp.weatherFlightIataSet_id, c1.Population AS cloudy_orig_city_pop, c2.Population AS sunny_dest_city_pop FROM data.finalPriceData fp LEFT JOIN data.citiesPopList c1 ON fp.cloudy_orig_city = c1.City LEFT JOIN data.citiesPopList c2 ON fp.sunny_dest_city = c2.City;"
+}

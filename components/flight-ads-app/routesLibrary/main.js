@@ -74,7 +74,7 @@ export const main = async () => {
       response_getFlightPrices
     );
 
-    return response_getFlightPrices;
+    return response_finalStep;
   } catch (error) {
     console.error("An error occurred in the main function:", error);
   }

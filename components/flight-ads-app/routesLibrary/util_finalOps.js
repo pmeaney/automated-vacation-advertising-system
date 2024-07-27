@@ -47,7 +47,7 @@ const joinPopulationOnFlights = async () => {
       // sql: "SELECT * FROM data.finalPriceData",
       // sql: "SELECT * FROM data.finalPriceData JOIN data.citiesPopList ON data.citiesPopList.City = data.finalPriceData.cloudy_orig_city AND data.citiesPopList.City = data.finalPriceData.sunny_dest_city",
       // sql: "SELECT * FROM data.finalPriceData JOIN data.citiesPopList ON data.citiesPopList.City = data.finalPriceData.cloudy_orig_city",
-      sql: "SELECT * FROM data.finalPriceData JOIN data.citiesPopList ON data.finalPriceData.cloudy_orig_city = data.citiesPopList.City",
+      sql: "SELECT fp.closestForecastTime, fp.cloudy_orig_city, fp.cloudy_orig_city_iata, fp.cloudy_orig_forecast, fp.cloudy_orig_state, fp.lowestPrice, fp.lowestPrice_flightCode, fp.flightQty, fp.sortedPrices, fp.sunny_dest_city, fp.sunny_dest_city_iata, fp.sunny_dest_forecast, fp.sunny_dest_state, fp.weatherFlightIataSet_id, c1.Population AS cloudy_orig_city_pop, c2.Population AS sunny_dest_city_pop FROM data.finalPriceData fp LEFT JOIN data.citiesPopList c1 ON fp.cloudy_orig_city = c1.City LEFT JOIN data.citiesPopList c2 ON fp.sunny_dest_city = c2.City;",
     }),
   };
 
@@ -67,11 +67,12 @@ const joinPopulationOnFlights = async () => {
 
 export const uploadFlightPrices_addJoin = async (finalFlightsPriceList) => {
   // upload the final flights price list
-  const response_postedData = await postFlightPriceData(finalFlightsPriceList);
+  // const response_postedData = await postFlightPriceData(finalFlightsPriceList);
+  await postFlightPriceData(finalFlightsPriceList);
 
   // Pull the final flights price data we just uploaded
   // and use a SQL join to combine it with Population data from our cities table.
-  // const response_joinPopulationOnFlights = await joinPopulationOnFlights();
-  // return response_joinPopulationOnFlights;
-  return response_postedData;
+  const response_joinPopulationOnFlights = await joinPopulationOnFlights();
+  return response_joinPopulationOnFlights;
+  // return response_postedData;
 };
