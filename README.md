@@ -195,6 +195,43 @@ It returns a list of flights from Cloudy to Sunny cities, including the lowest p
   }
 ```
 
+### SQL Join example
+
+Goal: Add Population of both the Origin & Destination cities to the final flight prices list.
+
+Explanation:
+
+1. Base Table (data.finalPriceData): This is the main table we are selecting from, aliased as fp.
+2. First Join (cloudy_orig_city): We perform a LEFT JOIN on data.citiesPopList using the cloudy_orig_city column to match the City column in data.citiesPopList, and alias this table as c1.
+3. Second Join (sunny_dest_city): We perform another LEFT JOIN on data.citiesPopList using the sunny_dest_city column to match the City column in data.citiesPopList, and alias this table as c2.
+4. Selecting Population: We select the Population from both joins and alias them as cloudy_orig_city_pop and sunny_dest_city_pop respectively.
+
+```
+SELECT
+    fp.closestForecastTime,
+    fp.cloudy_orig_city,
+    fp.cloudy_orig_city_iata,
+    fp.cloudy_orig_forecast,
+    fp.cloudy_orig_state,
+    fp.flightQty,
+    fp.lowestPrice,
+    fp.lowestPrice_flightCode,
+    fp.sortedPrices,
+    fp.sunny_dest_city,
+    fp.sunny_dest_city_iata,
+    fp.sunny_dest_forecast,
+    fp.sunny_dest_state,
+    fp.weatherFlightIataSet_id,
+    c1.Population AS cloudy_orig_city_pop,
+    c2.Population AS sunny_dest_city_pop
+FROM
+    data.finalPriceData fp
+LEFT JOIN
+    data.citiesPopList c1 ON fp.cloudy_orig_city = c1.City
+LEFT JOIN
+    data.citiesPopList c2 ON fp.sunny_dest_city = c2.City;
+```
+
 ### API Used
 
 - **OpenWeatherMaps** - Weather forecast API
