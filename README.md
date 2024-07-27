@@ -108,7 +108,7 @@ It returns a list of flights from Cloudy to Sunny cities, including the lowest p
     sunny_dest_city_iata: "PHX",
     sunny_dest_state: "AZ",
     cloudy_orig_forecast: "thunderstorm with heavy rain",
-    sunny_dest_forecast: "clear sky",
+    sunny_dest_forecast: "few clouds: 11-25%",
     count: 0,
     lowestPrice: null,
     sortedPrices: [],
