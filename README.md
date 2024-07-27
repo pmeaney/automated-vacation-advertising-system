@@ -207,6 +207,7 @@ It returns a list of flights from Cloudy to Sunny cities, including the lowest p
 - **Amadeus** - Flight prices API
   - Docs:
     - https://developers.amadeus.com/get-started/get-started-with-self-service-apis-335
+    - Test Env Data & API - https://developers.amadeus.com/self-service/apis-docs/guides/developer-guides/test-data/
 
 ### Loading CSV Files locally via Operations API
 
