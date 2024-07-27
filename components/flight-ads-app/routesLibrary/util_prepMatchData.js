@@ -55,6 +55,7 @@ export const pullIataCodeTable = async () => {
     return null;
   }
 };
+
 export const mergeMatchesWithIata = async (matchTable, iataTable) => {
   // Normalize and map the iataTable for quick lookup
   const iataMap = iataTable.reduce((acc, item) => {

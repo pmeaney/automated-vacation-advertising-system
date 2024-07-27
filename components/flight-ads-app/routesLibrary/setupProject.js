@@ -42,6 +42,13 @@ const createTables = async () => {
     table: "weatherFlightSets",
     primary_key: "weatherFlightIataSet_id",
   });
+
+  // Create weatherFlightSets table
+  await postData(BASE_URL, {
+    operation: "create_table",
+    table: "finalPriceData",
+    primary_key: "id_flightPriceSet",
+  });
 };
 
 const importCSVData = async () => {

@@ -15,6 +15,7 @@ import {
   mergeMatchesWithIata,
   uploadMergedIataFlights,
 } from "./util_prepMatchData.js";
+import { uploadFlightPrices_addJoin } from "./util_finalOps.js";
 
 // Function to delay execution for a given number of milliseconds
 const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
@@ -65,6 +66,14 @@ export const main = async () => {
       response_pullWeatherFlightsSetsTable
     );
     console.log("Main is done...");
+
+    // Upload the results to a table: finalPricePrices
+    // Then, Pull data from that table, Join it with the City table's Population field, where cities match
+    // And display it as the final data.
+    const response_finalStep = uploadFlightPrices_addJoin(
+      response_getFlightPrices
+    );
+
     return response_getFlightPrices;
   } catch (error) {
     console.error("An error occurred in the main function:", error);
