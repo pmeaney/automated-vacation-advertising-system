@@ -38,11 +38,11 @@ As a result, we have a ready to use process which we can run on a certain cadenc
 
 ## What, Why, & How
 
-![alt "Introduction"](./slides/s1.png)
+![alt "Introduction"](./slides/s1.png "Introduction")
 
-![alt "Overall Concept"](./slides/s2.png)
+![alt "Overall Concept"](./slides/s2.png "Overall Concept")
 
-![alt "Inner workings"](./slides/s3.png)
+![alt "Inner workings"](./slides/s3.png "Inner workings")
 
 ### Data example
 
