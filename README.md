@@ -38,7 +38,15 @@ As a result, we have a ready to use process which we can run on a certain cadenc
 
 ## What, Why, & How
 
-![alt "Introduction"](./docs/slides/s1.png "Introduction")
+An API Endpoint which
+
+- Matches Cloudy Cities to Sunny Cities using a 5-day out weather forecast
+- Provides Flight Prices for the matched cities
+- Generates derived data via a flight data analysis function
+
+... built with significantly less developer time & overhead compared to alternatives
+
+The project showcases HarperDB’s benefits including automatic datatable interoperability of multiple formats (CSV, JSON, SQL), querying with SQL via REST API, and HarperDB’s offer of an adaptable, quick-to-build, easy-to-use Developer Experience
 
 ![alt "Overall Concept"](./docs/slides/s2.png "Overall Concept")
 
