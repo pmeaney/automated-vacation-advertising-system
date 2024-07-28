@@ -48,7 +48,7 @@ An API Endpoint which
 
 The project showcases HarperDB’s benefits including automatic datatable interoperability of multiple formats (CSV, JSON, SQL), querying with SQL via REST API, and HarperDB’s offer of an adaptable, quick-to-build, easy-to-use Developer Experience
 
-![alt "Overall Concept"](./docs/slides/s2.png "Overall Concept")
+![alt "Overall Concept"](./docs/slides/s2b.png "Overall Concept including proof of concept 2")
 
 ![alt "Inner workings"](./docs/slides/s3.png "Inner workings")
 
