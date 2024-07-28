@@ -36,6 +36,14 @@ As a result, we have a ready to use process which we can run on a certain cadenc
 
 ![alt "Example Flight Ad"](./docs/nyc-to-lax-2.jpg "Example Flight Ad")
 
+## What, Why, & How
+
+![alt "Introduction"](./slides/s1.png)
+
+![alt "Overall Concept"](./slides/s2.png)
+
+![alt "Inner workings"](./slides/s3.png)
+
 ### Data example
 
 Here's an example of the data returned by the overall process.
