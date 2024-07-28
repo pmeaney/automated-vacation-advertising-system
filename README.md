@@ -18,6 +18,7 @@ Saluki Solutions has been retained to develop a Proof of Concept project, using 
   - Amadeus - Flight Prices
     - https://developers.amadeus.com/get-started/get-started-with-self-service-apis-335
 - Boot up the project with docker-compose: `docker compose up`
+- Cleanup (remove the container & its volumes) with: `docker compose rm -fv harperdb`
 - Start the application by issuing a GET request to run the main function:
   ```bash
       curl -X GET \
@@ -25,7 +26,7 @@ Saluki Solutions has been retained to develop a Proof of Concept project, using 
       -H 'Content-Type: application/json' \
       -H 'Authorization: Basic SERCX0FETUlOOnBhc3N3b3Jk'
   ```
-- To change the # of cities we run the program on, change the value for this in env.js `LIMIT_OF_CITIES_WEATHERLOOKUP`
+- To change the # of cities we run the program on, change the value for this in env.js `TOTAL_DESIRED_CITY_PAIRS`
 
 ## Results
 
