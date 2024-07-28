@@ -7,6 +7,17 @@ GET http://localhost:9926/flight-ads-app/runMain
 Content-Type: application/json
 Authorization: Basic SERCX0FETUlOOnBhc3N3b3Jk
 
+# Use a Join to add population of cloudy_orig_city & sunny_dest_city in the final dataset
+###
+POST http://localhost:9925/
+Content-Type: application/json
+Authorization: Basic SERCX0FETUlOOnBhc3N3b3Jk
+
+{
+    "operation": "sql",
+    "sql": "SELECT fp.closestForecastTime, fp.cloudy_orig_city, fp.cloudy_orig_city_iata, fp.cloudy_orig_forecast, fp.cloudy_orig_state, fp.lowestPrice, fp.lowestPrice_flightCode, fp.flightQty, fp.sortedPrices, fp.sunny_dest_city, fp.sunny_dest_city_iata, fp.sunny_dest_forecast, fp.sunny_dest_state, fp.weatherFlightIataSet_id, c1.Population AS cloudy_orig_city_pop, c2.Population AS sunny_dest_city_pop FROM data.finalPriceData fp LEFT JOIN data.citiesPopList c1 ON fp.cloudy_orig_city = c1.City LEFT JOIN data.citiesPopList c2 ON fp.sunny_dest_city = c2.City;"
+}
+
 
 ###
 # ## PREREQUISITE: Run Main fn.
@@ -31,62 +42,6 @@ Authorization: Basic SERCX0FETUlOOnBhc3N3b3Jk
     "operation": "sql",
     "sql": "SELECT * FROM data.weatherFlightSets LIMIT 5"
 }
-
-
-
-
-
-
-
-
-
-
-###
-# Run generateIataForFlights route
-# GET http://localhost:9926/flight-ads-app/generateIataForFlights
-# Content-Type: application/json
-# Authorization: Basic SERCX0FETUlOOnBhc3N3b3Jk
-
-
-###
-# # Testing....
-# POST http://localhost:9925/
-# Content-Type: application/json
-# Authorization: Basic SERCX0FETUlOOnBhc3N3b3Jk
-
-# {
-#     "operation": "sql",
-#     "sql": "CREATE TEMPORARY TABLE TempCloudyCities AS SELECT match_id, cloudy_orig_city, iata AS cloudy_orig_airportCode FROM sunnyCloudyCityMatches JOIN airportIataCodes ON sunnyCloudyCityMatches.cloudy_orig_city = airportIataCodes.city"
-# }
-
-
-
-
-###
-###
-# # test
-# POST http://localhost:9925/
-# Content-Type: application/json
-# Authorization: Basic SERCX0FETUlOOnBhc3N3b3Jk
-
-# {
-#     "operation": "sql",
-#     "sql": "CREATE TABLE weatherFlightSets AS
-#           SELECT
-#               data.sunnyCloudyCityMatches.match_id AS weatherFlightSet_id,
-#               data.sunnyCloudyCityMatches.cloudy_orig_city,
-#               originAirportCodes.iata AS cloudy_orig_airportCode,
-#               data.sunnyCloudyCityMatches.sunny_dest_city,
-#               destinationAirportCodes.iata AS sunny_dest_airportCode
-#           FROM
-#               data.sunnyCloudyCityMatches
-#           JOIN
-#               data.airportIataCodes originAirportCodes ON data.sunnyCloudyCityMatches.cloudy_orig_city = originAirportCodes.city
-#           JOIN
-#               data.airportIataCodes destinationAirportCodes ON data.sunnyCloudyCityMatches.sunny_dest_city = destinationAirportCodes.city"
-# }
-
-
 
 ###
 POST http://localhost:9925/
@@ -123,14 +78,3 @@ Authorization: Basic SERCX0FETUlOOnBhc3N3b3Jk
 # harperdb  | ... data.finalPriceData.cloudy_orig_city ON
 # harperdb  | -----------------------^
 # harperdb  | Expecting 'LITERAL', 'BRALITERAL', 'EOF', 'EndTransaction', 'WITH', 'COMMA', 'AS', 'LPAR', 'RPAR', 'SEARCH', 'PIVOT', 'FOR', 'UNPIVOT', 'ORDER', 'EQ', 'WHERE', 'DOLLAR', 'AT', 'SET', 'TO', 'VALUE', 'COLON', 'NOT', 'IF', 'UNION', 'INTERSECT', 'EXCEPT', 'QUESTION', 'FROM', 'UNIQUE', 'SELECT', 'CROSS', 'OUTER', 'NATURAL', 'JOIN', 'INNER', 'LEFT', 'RIGHT', 'FULL', 'SEMI', 'ANTI', 'ON', 'USING', 'GROUP', 'LIMIT', 'OFFSET', 'JAVASCRIPT', 'CREATE', 'REPLACE', 'NULL', 'BRAQUESTION', 'END', 'ELSE', 'UPDATE', 'DELETE', 'INSERT', 'DEFAULT', 'VALUES', 'IDENTITY', 'CHECK', 'PRIMARY', 'FOREIGN', 'REFERENCES', 'DROP', 'ALTER', 'RENAME', 'ADD', 'MODIFY', 'ATTACH', 'DETACH', 'USE', 'SHOW', 'SOURCE', 'ASSERT', 'ATLBRA', 'LCUR', 'COMMIT', 'ROLLBACK', 'BEGIN', 'WHILE', 'CONTINUE', 'BREAK', 'PRINT', 'REQUIRE', 'ECHO', 'DECLARE', 'TRUNCATE', 'MERGE', 'COLONDASH', 'QUESTIONDASH', 'CALL', 'BEFORE', 'AFTER', 'INSTEAD', 'REINDEX', 'GO', 'SEMICOLON', got 'DOT'
-
-# cloudy_orig_city sunny_dest_city
-###
-POST http://localhost:9925/
-Content-Type: application/json
-Authorization: Basic SERCX0FETUlOOnBhc3N3b3Jk
-
-{
-    "operation": "sql",
-    "sql": "SELECT fp.closestForecastTime, fp.cloudy_orig_city, fp.cloudy_orig_city_iata, fp.cloudy_orig_forecast, fp.cloudy_orig_state, fp.lowestPrice, fp.lowestPrice_flightCode, fp.flightQty, fp.sortedPrices, fp.sunny_dest_city, fp.sunny_dest_city_iata, fp.sunny_dest_forecast, fp.sunny_dest_state, fp.weatherFlightIataSet_id, c1.Population AS cloudy_orig_city_pop, c2.Population AS sunny_dest_city_pop FROM data.finalPriceData fp LEFT JOIN data.citiesPopList c1 ON fp.cloudy_orig_city = c1.City LEFT JOIN data.citiesPopList c2 ON fp.sunny_dest_city = c2.City;"
-}

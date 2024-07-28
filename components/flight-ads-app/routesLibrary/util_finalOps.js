@@ -40,13 +40,10 @@ const joinPopulationOnFlights = async () => {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
-      Authorization: "Basic SERCX0FETUlOOnBhc3N3b3Jk", // Assumes your base64 encoded credentials
+      Authorization: "Basic SERCX0FETUlOOnBhc3N3b3Jk",
     },
     body: JSON.stringify({
       operation: "sql",
-      // sql: "SELECT * FROM data.finalPriceData",
-      // sql: "SELECT * FROM data.finalPriceData JOIN data.citiesPopList ON data.citiesPopList.City = data.finalPriceData.cloudy_orig_city AND data.citiesPopList.City = data.finalPriceData.sunny_dest_city",
-      // sql: "SELECT * FROM data.finalPriceData JOIN data.citiesPopList ON data.citiesPopList.City = data.finalPriceData.cloudy_orig_city",
       sql: "SELECT fp.closestForecastTime, fp.cloudy_orig_city, fp.cloudy_orig_city_iata, fp.cloudy_orig_forecast, fp.cloudy_orig_state, fp.lowestPrice, fp.lowestPrice_flightCode, fp.flightQty, fp.sortedPrices, fp.sunny_dest_city, fp.sunny_dest_city_iata, fp.sunny_dest_forecast, fp.sunny_dest_state, fp.weatherFlightIataSet_id, c1.Population AS cloudy_orig_city_pop, c2.Population AS sunny_dest_city_pop FROM data.finalPriceData fp LEFT JOIN data.citiesPopList c1 ON fp.cloudy_orig_city = c1.City LEFT JOIN data.citiesPopList c2 ON fp.sunny_dest_city = c2.City;",
     }),
   };

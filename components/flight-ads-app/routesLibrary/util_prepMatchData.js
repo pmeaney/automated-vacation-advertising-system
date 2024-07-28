@@ -6,7 +6,7 @@ export const pullSunnyCloudyCityMatches = async () => {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
-      Authorization: "Basic SERCX0FETUlOOnBhc3N3b3Jk", // Assumes your base64 encoded credentials
+      Authorization: "Basic SERCX0FETUlOOnBhc3N3b3Jk",
     },
     body: JSON.stringify({
       operation: "sql",
@@ -34,7 +34,7 @@ export const pullIataCodeTable = async () => {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
-      Authorization: "Basic SERCX0FETUlOOnBhc3N3b3Jk", // Assumes your base64 encoded credentials
+      Authorization: "Basic SERCX0FETUlOOnBhc3N3b3Jk",
     },
     body: JSON.stringify({
       operation: "sql",
