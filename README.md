@@ -50,7 +50,7 @@ The project showcases HarperDB’s benefits including automatic datatable intero
 
 ![alt "Overall Concept"](./docs/slides/s2b.png "Overall Concept including proof of concept 2")
 
-![alt "Inner workings"](./docs/slides/s3.png "Inner workings")
+![alt "Inner workings"](./docs/slides/s3b.png "Inner workings of API proof of concept")
 
 ### Data example
 
