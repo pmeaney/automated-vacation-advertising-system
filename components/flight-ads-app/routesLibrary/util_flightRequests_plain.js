@@ -147,7 +147,7 @@ export const getFlightPrices = async (flightsTableList) => {
         amadeusAPIToken,
         flight
       );
-      await delay(500); // Delay to maintain a maximum of 2 requests per second
+      await delay(750); // Delay to maintain a maximum of 2 requests per second
       return result;
     })
   );
