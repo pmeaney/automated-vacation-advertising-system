@@ -24,13 +24,13 @@ export const main = async () => {
   console.log("Running main...");
 
   // Emit an event
-  try {
-    testEmitter.emitEvent("eventToLog", {
-      log: "Running main... in eventToLog",
-    });
-  } catch (error) {
-    console.log("[testEmitter-main] error: ", error);
-  }
+  // try {
+  //   testEmitter.emitEvent("eventToLog", {
+  //     log: "Running main... in eventToLog",
+  //   });
+  // } catch (error) {
+  //   console.log("[testEmitter-main] error: ", error);
+  // }
 
   try {
     // Create & load initial tables
